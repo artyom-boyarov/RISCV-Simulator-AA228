@@ -1229,11 +1229,17 @@ int64_t Simulator::handleSystemCall(int64_t op1, int64_t op2) {
   case 3:
   case 93: // exit
     printf("Program exit from an exit() system call\n");
+    if (type == 93) {
+      printf("Program return value:\n%d\n",
+             (int32_t)arg1, (unsigned long long)(uint64_t)arg1);
+    }
     if (shouldDumpHistory) {
       printf("Dumping history to dump.txt...");
       this->dumpHistory();
     }
-    this->printStatistics();
+    if (showStatistics) {
+      this->printStatistics();
+    }
     exit(0);
   case 4: // read char
     scanf(" %c", (char*)&op1);

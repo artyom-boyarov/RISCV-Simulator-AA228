@@ -25,6 +25,7 @@ char *elfFile = nullptr;
 bool verbose = 0;
 bool isSingleStep = 0;
 bool dumpHistory = 0;
+bool showStatistics = true;
 uint32_t stackBaseAddr = 0x80000000;
 uint32_t stackSize = 0x400000;
 MemoryManager memory;
@@ -89,6 +90,7 @@ int main(int argc, char **argv) {
   simulator.isSingleStep = isSingleStep;
   simulator.verbose = verbose;
   simulator.shouldDumpHistory = dumpHistory;
+  simulator.showStatistics = showStatistics;
   simulator.branchPredictor->strategy = strategy;
   simulator.pc = reader.get_entry();
   simulator.initStack(stackBaseAddr, stackSize);
@@ -118,6 +120,9 @@ bool parseParameters(int argc, char **argv) {
         break;
       case 'd':
         dumpHistory = 1;
+        break;
+      case 'q':
+        showStatistics = false;
         break;
       case 'b':
         if (i + 1 < argc) {
@@ -156,9 +161,10 @@ bool parseParameters(int argc, char **argv) {
 }
 
 void printUsage() {
-  printf("Usage: Simulator riscv-elf-file [-v] [-s] [-d] [-b param]\n");
+  printf("Usage: Simulator riscv-elf-file [-v] [-s] [-d] [-q] [-b param]\n");
   printf("Parameters: \n\t[-v] verbose output \n\t[-s] single step\n");
   printf("\t[-d] dump memory and register trace to dump.txt\n");
+  printf("\t[-q] suppress statistics\n");
   printf("\t[-b param] branch perdiction strategy, accepted param AT, NT, "
          "BTFNT, BPB\n");
 }
