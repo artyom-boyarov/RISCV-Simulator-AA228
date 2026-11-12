@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstdint>
 
 bool parseParameters(int argc, char **argv);
 void printUsage();
