@@ -72,22 +72,24 @@ def next_test_lookahead(b, L, cost, G, depth=3):
 
 
 """ if __name__ == "__main__":
-    # 3 faults (cache, memory, branch predictor), 3 tests, 2 outcomes (0 pass, 1 fail)
-    fail = np.array([[0.9, 0.3, 0.0],    # test 0 (cache stress): P(fail | fault)
-                     [0.3, 0.9, 0.0],    # test 1 (memory stress)
-                     [0.0, 0.0, 0.9]])   # test 2 (math kernel)
-    L = np.stack([1 - fail, fail], axis=2)        # shape (3 tests, 3 states, 2 outcomes)
+    # States: 0 = no fault, 1 = cache, 2 = memory, 3 = branch predictor
+    # Tests:  0 = cache stress, 1 = memory stress, 2 = math kernel;  outcomes: 0 pass, 1 fail
+    # fail[t, s] = P(test t fails | state s). The no-fault column is all ~0 (only noise).
+    fail = np.array([[0.0, 0.9, 0.3, 0.0],
+                     [0.0, 0.3, 0.9, 0.0],
+                     [0.0, 0.0, 0.0, 0.9]])
+    L = np.stack([1 - fail, fail], axis=2)        # shape (3 tests, 4 states, 2 outcomes)
     L = 0.98 * L + 0.01                           # keep every probability > 0
     cost = np.array([10.0, 30.0, 3.0])
-    G = np.eye(3)
+    G = np.eye(4)                                 # one diagnosis group per state (incl. no fault)
 
-    b = np.ones(3) / 3                            # start uniform
-    true_fault, rng = 1, np.random.default_rng(1)
+    b = np.array([0.4, 0.2, 0.2, 0.2])            # prior: 40% healthy, rest split over faults
+    true_fault, rng = 2, np.random.default_rng(2)  # try 0 to simulate a healthy CPU
     while (b @ G).max() < 0.9:
-        t = next_test_lookahead(b, L, cost, G, depth=3)   # or next_test(...) for the greedy 1-step version
+        t = next_test_lookahead(b, L, cost, G, depth=3)   # or next_test(...) for greedy 1-step
         if t is None:         # declaring now is worth more than any test sequence
             break
         o = int(rng.random() < L[t, true_fault, 1])          # stand-in for a real test run
         b = update_belief(b, L, t, o)
         print(f"test {t}  outcome {o}  belief {np.round(b, 3)}")
-    print("declare fault", int((b @ G).argmax()), "with belief", round(float((b @ G).max()), 3)) """
+    print("declare state", int((b @ G).argmax()), "with belief", round(float((b @ G).max()), 3)) """
