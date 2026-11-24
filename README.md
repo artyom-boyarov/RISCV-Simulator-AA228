@@ -83,6 +83,67 @@ The buffers are placed starting at address `0x000`. Cache and memory faults may
 change the fingerprint, be masked, or prevent completion; `--no-cache` can be
 used to focus on the memory controller.
 
+### Estimate likelihoods
+
+`generate_likelihoods.py` estimates the tensor used by `VOI_Belief.py`. It
+requires NumPy (`sudo apt install python3-numpy` on Ubuntu) and built simulator
+and kernel binaries. By default it selects the seven fault-detection kernels,
+the Sobel workload, every `faults/**/*.txt` file, and a no-fault state. It runs
+each test 10 times for each state. From the cluster login environment, start a
+full batch in a new directory, choosing the desired number of processes:
+
+```sh
+python3 generate_likelihoods.py batch likelihood-campaign --processes 16
+```
+
+The preparation step writes `manifest.json`, `tests.csv`, and `states.csv`, and
+copies the fault configurations into `configs/`. The state index is stable:
+for example, the valid-bit stuck-0, stuck-1, and flip faults at 100% are states
+0–2, followed by their 50% versions at 3–5. The no-fault state is last.
+Properties in the CSV come from file contents rather than filenames.
+
+`batch` prepares the campaign, runs it with Python multiprocessing, then
+aggregates the results. Each worker handles one state and exits
+(`maxtasksperchild=1`, `chunksize=1`), releasing its process memory before the
+next state. Each individual simulator run is also a fresh process. A worker
+writes `states/NNNN.npz` after finishing its state and prints a summary after
+each set of runs. Rerun the same `batch` command to resume an interrupted
+campaign; its existing manifest settings apply. Do not run two batches on the
+same directory concurrently. The pool uses Linux's `fork` start method.
+
+The `prepare`, `run`, `run-state`, and `aggregate` subcommands remain available
+if you need to execute or inspect the stages separately.
+
+Aggregation requires every state file and writes `likelihoods.npz` and
+`outcomes.csv`. Load the tensor and its axis mappings with:
+
+```python
+import numpy as np
+data = np.load("likelihood-campaign/likelihoods.npz")
+L = data["L"]                         # tests × states × outcomes
+tests = data["test_names"]            # index -> test
+states = data["state_names"]          # index -> fault file, or no_fault
+outcomes = data["outcome_labels"]     # index -> observed outcome
+```
+
+Each `L[t,s,o]` is the matching count divided by the number of runs; no
+smoothing is applied. Labels include `return:<integer>`, `timeout`, nonzero
+host `exit:<status>`, and `missing_or_ambiguous_return`. Failures and timeouts
+count as observations rather than being silently dropped. Only outcomes observed
+in the campaign are included. The file also contains `counts`, `state_properties`,
+per-run `seconds`, `mean_seconds`, and `runs`. The kernel's printed return value,
+not the host exit status, is used for successful guest exits.
+
+`batch --runs N`, `--timeout SECONDS`, `--branch-strategy NT`, repeatable
+`--kernel PATH` and `--fault PATH`, and repeatable `--uncached-test TEST_NAME`
+configure a campaign. Cache is enabled by default for every test. Use the same
+cache mode for all states of a test; an uncached test cannot observe cache
+faults. Inputs are identified by SHA-256 and copied fault files are checked
+before each job. Prepare and run on the cluster after building the simulator
+there, or transfer the same binaries with the campaign and repository. The
+branch predictor affects prediction statistics and timing, so architectural
+return values alone may not distinguish branch faults.
+
 ### Fault configuration files
 
 Ready-to-use branch predictor and memory examples are in `faults/`.

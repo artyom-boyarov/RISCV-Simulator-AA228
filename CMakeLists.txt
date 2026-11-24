@@ -46,6 +46,9 @@ if(BUILD_TESTING)
     add_test(NAME branch_fault_test COMMAND branch_fault_test)
     find_package(PythonInterp QUIET)
     if(PYTHONINTERP_FOUND)
+        add_test(NAME likelihood_runner_test COMMAND ${PYTHON_EXECUTABLE}
+                 ${CMAKE_SOURCE_DIR}/test/likelihood_runner_test.py)
+        set_tests_properties(likelihood_runner_test PROPERTIES SKIP_RETURN_CODE 77)
         add_test(NAME cache_fault_configs_test COMMAND ${PYTHON_EXECUTABLE}
                  ${CMAKE_SOURCE_DIR}/test/cache_fault_configs_test.py
                  ${CMAKE_SOURCE_DIR}/faults/cache)
