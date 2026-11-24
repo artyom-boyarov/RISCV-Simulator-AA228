@@ -256,13 +256,21 @@ def aggregate(args):
             for label in row:
                 counts[t, s, index[label]] += 1
     seconds = np.stack(state_seconds, axis=1)
-    np.savez_compressed(destination, L=counts / runs, counts=counts,
-                        outcome_labels=np.asarray(labels), test_names=np.asarray([t["name"] for t in tests]),
-                        state_names=np.asarray([s["name"] for s in states]),
-                        state_properties=np.asarray([json.dumps(s["properties"], sort_keys=True) for s in states]),
-                        seconds=seconds, mean_seconds=seconds.mean(axis=2), runs=runs)
     write_csv(campaign / "outcomes.csv", [{"index": i, "label": label} for i, label in enumerate(labels)],
               ("index", "label"))
+    # Keep an interrupted aggregation from leaving a partial final result.
+    with tempfile.NamedTemporaryFile(dir=campaign, suffix=".npz", delete=False) as temp:
+        temporary = Path(temp.name)
+        try:
+            np.savez_compressed(temp, L=counts / runs, counts=counts,
+                                outcome_labels=np.asarray(labels), test_names=np.asarray([t["name"] for t in tests]),
+                                state_names=np.asarray([s["name"] for s in states]),
+                                state_properties=np.asarray([json.dumps(s["properties"], sort_keys=True) for s in states]),
+                                seconds=seconds, mean_seconds=seconds.mean(axis=2), runs=runs)
+        except BaseException:
+            temporary.unlink(missing_ok=True)
+            raise
+    os.replace(temporary, destination)
     print(f"Saved {destination}: L shape {counts.shape}; each row has {runs} observations", flush=True)
 
 

@@ -86,11 +86,11 @@ used to focus on the memory controller.
 ### Estimate likelihoods
 
 `generate_likelihoods.py` estimates the tensor used by `VOI_Belief.py`. It
-requires NumPy (`sudo apt install python3-numpy` on Ubuntu) and built simulator
+requires NumPy and built simulator
 and kernel binaries. By default it selects the seven fault-detection kernels,
 the Sobel workload, every `faults/**/*.txt` file, and a no-fault state. It runs
-each test 10 times for each state. From the cluster login environment, start a
-full batch in a new directory, choosing the desired number of processes:
+each test 10 times for each state. On an allocated compute node, a batch can
+be started directly in a new directory with the desired number of processes:
 
 ```sh
 python3 generate_likelihoods.py batch likelihood-campaign --processes 16
@@ -110,6 +110,34 @@ writes `states/NNNN.npz` after finishing its state and prints a summary after
 each set of runs. Rerun the same `batch` command to resume an interrupted
 campaign; its existing manifest settings apply. Do not run two batches on the
 same directory concurrently. The pool uses Linux's `fork` start method.
+
+For FarmShare Slurm, submit the included script from the repository root:
+
+```sh
+sbatch run_likelihoods.sbatch
+```
+
+It requests one node, eight CPUs, 8 GiB of memory, and two hours on `normal`.
+The worker count follows `SLURM_CPUS_PER_TASK`; for example, override it with
+`sbatch --cpus-per-task=16 --mem=16G run_likelihoods.sbatch`. Additional batch
+options can be passed after a campaign directory, such as
+`sbatch run_likelihoods.sbatch my-campaign --timeout 20`. The script activates
+the project's `.venv` and uses its Python, which must have NumPy installed and
+be available on the compute node. Build the simulator and kernels on FarmShare
+before submitting. FarmShare
+[documents Python modules and virtual environments](https://docs.farmshare.stanford.edu/docs/software/);
+for example, use `uv venv .venv`, `source .venv/bin/activate`, and
+`uv pip install numpy` if NumPy is not available in your chosen environment.
+
+`sbatch` prints a job ID. Check it with `squeue -j JOBID` and follow progress
+from the submission directory with `tail -f likelihood-JOBID.out`. Results
+are in `likelihood-campaign/` by default. After a time limit, resubmit with the
+same campaign directory to resume completed state files. Do not submit two jobs
+against the same campaign at once. FarmShare limits and available node sizes can
+change; inspect `scontrol show partition normal`, `sinfo -N -p normal -o "%N %c %m %t"`,
+and `sacctmgr show qos format=Name,MaxTRESPU,MaxWall` on the cluster before
+requesting more CPUs. See FarmShare's [Slurm documentation](https://docs.farmshare.stanford.edu/docs/slurm/)
+for partition and quality-of-service details.
 
 The `prepare`, `run`, `run-state`, and `aggregate` subcommands remain available
 if you need to execute or inspect the stages separately.
