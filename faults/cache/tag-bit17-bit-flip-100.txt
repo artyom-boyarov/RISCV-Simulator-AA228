@@ -1,0 +1,5 @@
+type = cache
+field = tag
+bit = 17
+fault = BIT_FLIP
+rate = 1.0

@@ -38,6 +38,8 @@ public:
 
   bool setInt(uint32_t addr, uint32_t val, uint32_t *cycles = nullptr);
   uint32_t getInt(uint32_t addr, uint32_t *cycles = nullptr);
+  // Fetch an instruction without applying memory-controller or cache faults.
+  uint32_t getInstruction(uint32_t addr);
 
   bool setLong(uint32_t addr, uint64_t val, uint32_t *cycles = nullptr);
   uint64_t getLong(uint32_t addr, uint32_t *cycles = nullptr);

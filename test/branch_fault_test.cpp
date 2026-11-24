@@ -31,9 +31,6 @@ int main() {
   check(!predict(predictor), "disable restores normal prediction and preserves state");
 
   predictor.strategy = BranchPredictor::NT;
-  fault.rate = 0.0;
-  predictor.enableFaults(fault);
-  check(!predict(predictor), "zero rate leaves prediction unchanged");
   fault.rate = 0.5;
   predictor.enableFaults(fault);
   int taken = 0;

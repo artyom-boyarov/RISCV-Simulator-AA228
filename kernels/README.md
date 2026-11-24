@@ -3,8 +3,9 @@
 - `smoke/test/`: original test programs and their `lib.c` syscall helpers.
 - `smoke/inclass/`: original in-class programs.
 - `fault-detection/`: memory test kernels.
+- `stress/`: small numerical workloads, including an integer Sobel image filter.
 - `start.S`: minimal startup shared by the freestanding builds.
-- `error_codes.h`: shared error types and `ERROR_CODE(value, type)` encoding.
+- `error_codes.h`: shared success sentinel and legacy encoded-error helpers.
 - `bin/test/` and `bin/inclass/`: original reference ELF executables.
 - `assembly/`: corresponding reference disassemblies.
 - `bin/`: default destination for new builds.
@@ -17,11 +18,11 @@ From the repository root, compile and run a guest program with:
 ```
 
 The build script automatically links `smoke/test/lib.c` for programs in that
-directory, and places a `.memory_region` section at `0x1000` when present.
+directory, and places a `.memory_region` section at `0x000` when present.
 The legacy batch build scripts require a cross-toolchain with its C runtime and
 libraries; the freestanding script needs only GCC and binutils.
 
-Fault-detection kernels return `ERROR_CODE(address, ERR_TYPE_DATA_INVALID)` on
-the first mismatch, and return 0 for success. The encoded value places the
-error type in the low two bits; `ERR_TYPE_MASK` can extract them. Values must
-fit in 30 bits and error types in two bits.
+Fault-detection kernels return the first failing address plus one, except
+`cache_tag_bits_kernel.c`, which returns the detected tag bit number plus one.
+All return `KERNEL_SUCCESS` (`0`) on success. Subtract one from a nonzero
+result to recover the address or bit number.

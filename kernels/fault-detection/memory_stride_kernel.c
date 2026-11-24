@@ -1,6 +1,6 @@
 #include "../error_codes.h"
 
-/* Link .memory_region at 0x1000; volatile preserves the sparse accesses. */
+/* Link .memory_region at 0x000; volatile preserves the sparse accesses. */
 #define PAGE_SIZE 4096u
 #define STRIDE 16u
 
@@ -9,13 +9,17 @@ volatile unsigned char memory_region[PAGE_SIZE]
 
 int main(void) {
     unsigned int i;
-
+    // 0x000 = 0
+    // 0x010 = 1
+    // 0xFF0 = 0xFF
     for (i = 0; i < PAGE_SIZE / STRIDE; ++i)
         memory_region[i * STRIDE] = (unsigned char)i;
 
+    // 0x000 = 0
+    // 0x010 = 1
     for (i = 0; i < PAGE_SIZE / STRIDE; ++i) {
         if (memory_region[i * STRIDE] != (unsigned char)i)
-            return (int)ERROR_CODE(0x1000u + i * STRIDE, ERR_TYPE_DATA_INVALID);
+            return KERNEL_FAILURE(i * STRIDE);
     }
-    return 0;
+    return KERNEL_SUCCESS;
 }

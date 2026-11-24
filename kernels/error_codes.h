@@ -1,7 +1,11 @@
 #ifndef KERNEL_ERROR_CODES_H
 #define KERNEL_ERROR_CODES_H
 
-/* The low two bits identify the error; zero is reserved for no error. */
+/* Failures use a one-based address or tag-bit number. */
+#define KERNEL_SUCCESS 0
+#define KERNEL_FAILURE(value) ((int)((unsigned int)(value) + 1u))
+
+/* Legacy encoded-error helpers, available to other guest programs. */
 #define ERR_TYPE_NONE 0u
 #define ERR_TYPE_DATA_INVALID 1u
 #define ERR_TYPE_MASK 3u

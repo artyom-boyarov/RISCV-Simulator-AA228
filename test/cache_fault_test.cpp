@@ -79,10 +79,21 @@ int main() {
   {
     Cache cache(&memory, policy);
     cache.getByte(a);
-    cache.enableFaults(fault(CacheFaultField::TAG, FaultType::BIT_FLIP));
+    CacheFault flip = fault(CacheFaultField::TAG, FaultType::BIT_FLIP);
+    flip.rate = 0.5;
+    cache.enableFaults(flip);
     int hits = 0;
     for (int i = 0; i < 1000; ++i) hits += cache.inCache(a);
     check(hits > 400 && hits < 600, "tag flips approximately half of reads");
+    flip.rate = 1.0;
+    cache.enableFaults(flip);
+    check(!cache.inCache(a), "tag flips every read at 100 percent");
+    CacheFault stuck = fault(CacheFaultField::TAG, FaultType::STUCK_AT_1);
+    stuck.rate = 0.5;
+    cache.enableFaults(stuck);
+    hits = 0;
+    for (int i = 0; i < 1000; ++i) hits += cache.inCache(a);
+    check(hits > 400 && hits < 600, "stuck tag fault applies approximately half the time");
     cache.disableFaults();
     check(cache.inCache(a), "disable restores tag");
   }

@@ -1,0 +1,5 @@
+type = cache
+field = tag
+bit = 13
+fault = STUCK_AT_1
+rate = 0.5

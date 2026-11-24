@@ -1,6 +1,6 @@
 #include "../error_codes.h"
 
-/* Link .memory_region at 0x1000; volatile preserves all memory accesses. */
+/* Link .memory_region at 0x000; volatile preserves all memory accesses. */
 #define REGION_SIZE 256u
 #define REGIONS 16u
 
@@ -20,8 +20,8 @@ int main(void) {
         for (index = 0; index < REGION_SIZE; ++index) {
             offset = region * REGION_SIZE + index;
             if (memory_region[offset] != (unsigned char)offset)
-                return (int)ERROR_CODE(0x1000u + offset, ERR_TYPE_DATA_INVALID);
+                return KERNEL_FAILURE(offset);
         }
     }
-    return 0;
+    return KERNEL_SUCCESS;
 }

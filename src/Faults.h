@@ -21,11 +21,10 @@ enum class CacheFaultField {
 
 struct Fault {
     FaultLocation location;
-    double rate;
+    double rate = 1.0;
 };
 
 struct CacheFault : public Fault {
-    uint32_t addr;
     bool isWrite;
     bool isHit;
     CacheFaultField field;

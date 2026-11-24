@@ -1,0 +1,4 @@
+# Force page-offset bit 11 to zero on every backing-memory access.
+type = memory
+fault = STUCK_AT_0
+bit = 11

@@ -19,6 +19,16 @@ FaultType parseType(const std::string &value) {
   throw std::runtime_error("fault must be STUCK_AT_0, STUCK_AT_1, or BIT_FLIP");
 }
 
+double parseRate(const std::string &value) {
+  size_t consumed = 0;
+  double rate;
+  try { rate = std::stod(value, &consumed); }
+  catch (const std::exception &) { throw std::runtime_error("rate must be 0.5 or 1.0"); }
+  if (consumed != value.size() || (rate != 0.5 && rate != 1.0))
+    throw std::runtime_error("rate must be 0.5 or 1.0");
+  return rate;
+}
+
 unsigned parseBit(const std::string &value) {
   if (value.empty() || value.find_first_not_of("0123456789") != std::string::npos)
     throw std::runtime_error("bit must be a decimal integer");
@@ -41,6 +51,9 @@ FaultConfig makeConfig(const std::map<std::string, std::string> &properties) {
     result.memory.location = result.location;
     result.memory.type = parseType(require("fault"));
     result.memory.bitPosition = parseBit(require("bit"));
+    auto rate = properties.find("rate");
+    result.memory.rate = rate == properties.end() ?
+        (result.memory.type == FaultType::BIT_FLIP ? 0.5 : 1.0) : parseRate(rate->second);
   } else if (type == "cache") {
     result.location = FaultLocation::CACHE;
     result.cache.location = result.location;
@@ -52,15 +65,13 @@ FaultConfig makeConfig(const std::map<std::string, std::string> &properties) {
     else if (field == "id") result.cache.field = CacheFaultField::ID;
     else throw std::runtime_error("field must be valid, modified, tag, or id");
     result.cache.bitPosition = parseBit(require("bit"));
+    auto rate = properties.find("rate");
+    result.cache.rate = rate == properties.end() ?
+        (result.cache.type == FaultType::BIT_FLIP ? 0.5 : 1.0) : parseRate(rate->second);
   } else if (type == "branch") {
     result.location = FaultLocation::BRANCH_PREDICTOR;
     result.branch.location = result.location;
-    const std::string rate = require("rate");
-    size_t consumed = 0;
-    try { result.branch.rate = std::stod(rate, &consumed); }
-    catch (const std::exception &) { throw std::runtime_error("rate must be a number between 0 and 1"); }
-    if (consumed != rate.size())
-      throw std::runtime_error("rate must be a number between 0 and 1");
+    result.branch.rate = parseRate(require("rate"));
   } else {
     throw std::runtime_error("type must be memory, cache, or branch");
   }

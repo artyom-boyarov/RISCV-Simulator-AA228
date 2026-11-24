@@ -6,6 +6,7 @@
 #include "Debug.h"
 
 #include <cstdio>
+#include <stdexcept>
 #include <string>
 
 MemoryManager::MemoryManager() {
@@ -157,6 +158,22 @@ uint32_t MemoryManager::getInt(uint32_t addr, uint32_t *cycles) {
   return b1 + (b2 << 8) + (b3 << 16) + (b4 << 24);
 }
 
+uint32_t MemoryManager::getInstruction(uint32_t addr) {
+  const bool wasEnabled = faultsEnabled;
+  faultsEnabled = false;
+  if (cache) cache->beginInstructionFetch();
+  try {
+    const uint32_t instruction = getInt(addr);
+    if (cache) cache->endInstructionFetch();
+    faultsEnabled = wasEnabled;
+    return instruction;
+  } catch (...) {
+    if (cache) cache->endInstructionFetch();
+    faultsEnabled = wasEnabled;
+    throw;
+  }
+}
+
 bool MemoryManager::setLong(uint32_t addr, uint64_t val, uint32_t *cycles) {
   if (!this->isAddrExist(addr)) {
     dbgprintf("Long write to invalid addr 0x%x!\n", addr);
@@ -247,7 +264,7 @@ uint32_t MemoryManager::getSecondEntryId(uint32_t addr) {
 
 uint32_t MemoryManager::getPageOffset(uint32_t addr) {
   uint32_t offset = addr & 0xFFF;
-  if (!faultsEnabled) {
+  if (!faultsEnabled || !flipOffsetBit(faultRandomGenerator)) {
     return offset;
   }
 
@@ -258,13 +275,16 @@ uint32_t MemoryManager::getPageOffset(uint32_t addr) {
   case FaultType::STUCK_AT_1:
     return offset | mask;
   case FaultType::BIT_FLIP:
-    return flipOffsetBit(faultRandomGenerator) ? offset ^ mask : offset;
+    return offset ^ mask;
   }
   return offset;
 }
 
 void MemoryManager::enableFaults(const MemoryFault &fault) {
+  if (fault.rate != 0.5 && fault.rate != 1.0)
+    throw std::invalid_argument("fault rate must be 0.5 or 1.0");
   memoryFault = fault;
+  flipOffsetBit = std::bernoulli_distribution(fault.rate);
   faultsEnabled = true;
 }
 

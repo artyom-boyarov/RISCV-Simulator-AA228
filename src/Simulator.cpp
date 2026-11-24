@@ -169,7 +169,7 @@ void Simulator::fetch() {
     this->panic("Illegal PC 0x%x!\n", this->pc);
   }
 
-  uint32_t inst = this->memory->getInt(this->pc);
+  uint32_t inst = this->memory->getInstruction(this->pc);
   uint32_t len = 4;
 
   if (this->verbose) {

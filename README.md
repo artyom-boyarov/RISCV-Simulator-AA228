@@ -61,10 +61,31 @@ under `kernels/bin/`. Set `RISCV_GCC` to use a compiler at a different path.
 The script links `kernels/start.S`, which calls `main` and exits using the
 simulator's `ecall` interface. It builds a freestanding RV64I executable without
 libc; programs requiring library functions must provide their own compatible
-implementations. `-O0` keeps calculations available for instruction tracing.
+implementations. Fault-detection and stress kernels use `-O1`; other sources
+use GCC's default optimization level.
+
+### Sobel image stress kernel
+
+`kernels/stress/sobel_image.c` adapts the integer Sobel gradient from
+[Grayskull](https://github.com/zserge/grayskull/blob/main/grayskull.h) to a
+generated 16×16 grayscale image, without file I/O or a C runtime. It leaves the
+image border at zero and returns the low 12 bits of a fingerprint of the edge
+pixels, in the range 0–4095. The fault-free result is `1690`, verified against
+an independent reference. It is a workload result, not a pass/fail return code.
+
+```sh
+./compile-riscv.sh kernels/stress/sobel_image.c
+./build/Simulator kernels/bin/sobel_image.riscv -q
+./build/Simulator kernels/bin/sobel_image.riscv -q -f faults/memory-bit11-stuck-at-0.txt
+```
+
+The buffers are placed starting at address `0x000`. Cache and memory faults may
+change the fingerprint, be masked, or prevent completion; `--no-cache` can be
+used to focus on the memory controller.
 
 ### Fault configuration files
 
+Ready-to-use branch predictor and memory examples are in `faults/`.
 Use `-f` to enable faults during execution:
 
 ```sh
@@ -87,16 +108,21 @@ fault = BIT_FLIP
 bit = 0
 
 type = branch
-rate = 0.3
+rate = 0.5
 ```
 
 Memory accepts `fault` values `STUCK_AT_0`, `STUCK_AT_1`, or `BIT_FLIP` and a
 page-offset `bit` from 0–11. Cache faults apply only to L1 and accept those
 fault values, a `field` of `valid`, `modified`, `tag`, or `id`, and a
 `bit` (0 for valid or modified, 0–31 for tag or id). Branch faults use a
-`rate` from 0–1. Memory and cache `BIT_FLIP` faults use a fixed 50% probability.
+`rate` of `0.5` or `1.0`. The rate is the probability that the configured fault
+applies on each eligible access or prediction. For memory and cache faults,
+`rate` is optional: it defaults to `0.5` for `BIT_FLIP` and `1.0` for stuck
+faults. Branch faults require a rate.
+For C++ callers, `Fault::rate` defaults to `1.0` for every fault type; set it
+explicitly to `0.5` when a 50% bit-flip rate is desired.
 The cache level is always L1; a `level` property is ignored. Configuration
-values are not validated: use the ranges above, since invalid values can cause
+other values are not validated: use the ranges above, since invalid values can cause
 undefined behavior. Unknown properties are ignored
 and the last value of a repeated property is used. The parser still requires
 recognizable fault names and required properties. With no `-f`, faults remain
@@ -105,17 +131,48 @@ and stack initialization; preexisting cache contents are retained.
 
 ### Memory test kernel
 
-`kernels/fault-detection/memory_kernel.c` writes 256 incrementing bytes at `0x1000`–`0x10ff`,
+`kernels/fault-detection/memory_kernel.c` writes 256 incrementing bytes at `0x000`–`0x0ff`,
 then reads and compares that region 16 times. `memory_page_kernel.c` writes all
 16 consecutive 256-byte regions before reading and comparing them, covering
-the full page at `0x1000`–`0x1fff`. Values wrap modulo 256, so address `0x1001`
-contains 1. Both return 0 on success, or `(failing_address << 2) | 1` on the
-first mismatch. For example, a mismatch at `0x1001` returns `0x4005` (16389).
+the full page at `0x000`–`0xfff`. Values wrap modulo 256, so address `0x001`
+contains 1. Both return `0` on success or the first failing address plus one.
+For example, a mismatch at `0x001` returns `2`.
 
 `kernels/fault-detection/memory_stride_kernel.c` tests the upper page-offset bits by
-writing byte `i` at `0x1000 + 16*i` for `i` from 0 to 255, then checking the
-same addresses. It covers `0x1000`, `0x1010`, ..., `0x1ff0` using the same
+writing byte `i` at `0x000 + 16*i` for `i` from 0 to 255, then checking the
+same addresses. It covers `0x000`, `0x010`, ..., `0xff0` using the same
 return codes; it does not check the bytes between those addresses.
+
+`kernels/fault-detection/memory_address_bits_kernel.c` checks each of the 12
+page-offset bits in turn. It first compares pairs whose offsets are all ones
+and all ones except that bit, then repeats with all zeros and only that bit
+set. Each pair is written with `0xfe` and `0xef` before being read back. It
+uses the same return codes and stops at the first mismatch.
+
+`kernels/fault-detection/cache_single_address_kernel.c` tests each byte from
+`0x000` through `0xfff`: it writes values 0–15 to that address, then reads
+once and checks the final value is 15. Run it with cache enabled to exercise L1;
+a mismatch returns the failing address plus one.
+
+`kernels/fault-detection/cache_modified_kernel.c` tests an L1 modified bit
+stuck at zero. It writes `0xa5` at `0x000`, reads eight other cache lines
+mapping to the same set, then checks `0x000` after eviction. With the current
+1 KiB, 64-byte-line, 8-way L1 and cache enabled, an undetected dirty line loses
+its writeback and the kernel returns `1`. It returns `0` without the fault.
+This kernel is specific to that L1 geometry and does not establish detection of
+a modified bit stuck at one.
+
+`kernels/fault-detection/cache_tag_bits_kernel.c` diagnoses a single L1 tag
+bit stuck at 0 or 1 at 100% rate. It probes pairs of addresses whose tags
+differ in one bit. A zero-tag write/read selects either an all-zero-tag or an
+all-one-tag reference, so both stuck directions can be distinguished by bit.
+It returns `0` if no mismatch is found, or the first failing tag bit plus one:
+bit 0 returns 1, bit 1 returns 2, and so on. Unlike the memory kernels, the
+nonzero result encodes a tag bit number, not an address.
+This diagnostic assumes the current 1 KiB, 8-way L1 and one deterministic tag
+fault; it does not reliably identify 50% faults or other types of faults.
+Build it using `compile-riscv.sh`, which supplies the accompanying sparse ELF
+sections needed to map probe addresses across the 32-bit address space.
 
 Build and run it with a RISC-V cross-compiler:
 
@@ -132,8 +189,9 @@ The section placement maps the target region into the ELF; `--no-relax` avoids
 relying on a global pointer that the minimal startup does not initialize. The
 `--no-cache` makes reads and writes reach the memory controller. This pattern
 repeats every 256 bytes, so offset faults in bits 8–11 can alias locations with
-identical expected values and go undetected even without cache. Faults also
-affect instruction fetches and can prevent the kernel from completing.
+identical expected values and go undetected even without cache. Memory faults
+are suppressed during instruction fetches but still affect data and stack
+accesses, which can prevent the kernel from completing.
 
 ### Memory controller faults
 
@@ -144,17 +202,19 @@ MemoryFault fault{};
 fault.location = FaultLocation::MEMORY_CONTROLLER;
 fault.bitPosition = 3; // page-offset bit, from 0 through 11
 fault.type = FaultType::STUCK_AT_0; // or STUCK_AT_1 or BIT_FLIP
+fault.rate = 1.0; // or 0.5
 memory.enableFaults(fault);
 // Run the simulation with faults enabled.
 memory.disableFaults();
 ```
 
-The stuck types force the selected offset bit on each backing-memory access;
-`BIT_FLIP` flips it independently with 50% probability per byte access. The
-inherited `rate` field is not used for these fixed-probability fault types.
+The stuck types force the selected offset bit and `BIT_FLIP` flips it, each
+with the configured probability per backing-memory byte access.
 Faults start disabled. Set them up after loading the program and initializing
 memory if those steps should be fault-free. Cache hits bypass the memory
-controller; cache fills and writebacks use it. Enabling or disabling a fault
+controller; data cache fills and writebacks use it. During an instruction fetch,
+memory and cache faults are temporarily disabled, including for any cache
+activity caused by that fetch. Enabling or disabling a fault
 does not clear caches or undo data already written through a faulty offset.
 
 ### Cache metadata faults
@@ -167,6 +227,7 @@ fault.location = FaultLocation::CACHE;
 fault.field = CacheFaultField::TAG; // VALID, MODIFIED, TAG, or ID
 fault.bitPosition = 0;
 fault.type = FaultType::STUCK_AT_1; // or STUCK_AT_0 or BIT_FLIP
+fault.rate = 1.0; // or 0.5
 cache.enableFaults(fault);
 // Run the simulation.
 cache.disableFaults();
@@ -175,20 +236,20 @@ cache.disableFaults();
 The fault affects metadata reads for all blocks of that cache, including
 lookup, replacement, and writeback address calculation. It does not modify
 data bits or the stored metadata itself. The stuck types force the selected
-bit; `BIT_FLIP` flips it with 50% probability independently on each metadata
-read. Valid and modified accept only bit 0; tag and ID accept bits 0–31.
-The inherited `rate` and the `addr`, `isWrite`, and `isHit` fields are not used
+bit; `BIT_FLIP` flips it, with the configured probability per metadata read.
+Valid and modified accept only bit 0; tag and ID accept bits 0–31.
+The `isWrite` and `isHit` fields are not used
 by this model. Faults start disabled; disabling one does not undo prior cache
 or memory changes.
 
 ### Branch predictor faults
 
-Configure a `Fault` with a probability between 0 and 1:
+Configure a `Fault` with a rate of `0.5` or `1.0`:
 
 ```cpp
 Fault fault{};
 fault.location = FaultLocation::BRANCH_PREDICTOR;
-fault.rate = 0.3;
+fault.rate = 0.5;
 predictor.enableFaults(fault);
 // Run the simulation.
 predictor.disableFaults();
@@ -196,8 +257,7 @@ predictor.disableFaults();
 
 Each prediction is independently inverted with the configured probability,
 for any predictor strategy. Faults start disabled; disabling them restores the
-strategy's normal behavior. Predictor state updates continue as usual. Invalid
-locations and probabilities are not validated.
+strategy's normal behavior. Predictor state updates continue as usual.
 
 When `main` returns, the startup code passes its result in `a0` to exit
 system call 93. The simulator prints `Program return value:` followed by the

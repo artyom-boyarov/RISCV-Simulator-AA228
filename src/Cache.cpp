@@ -6,6 +6,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "Cache.h"
 
@@ -315,14 +316,28 @@ uint32_t Cache::getAddr(Cache::Block &b) {
 }
 
 void Cache::enableFaults(const CacheFault &fault) {
+  if (fault.rate != 0.5 && fault.rate != 1.0)
+    throw std::invalid_argument("fault rate must be 0.5 or 1.0");
   cacheFault = fault;
+  flipMetadataBit = std::bernoulli_distribution(fault.rate);
   faultsEnabled = true;
 }
 
 void Cache::disableFaults() { faultsEnabled = false; }
 
+void Cache::beginInstructionFetch() {
+  ++instructionFetchDepth;
+  if (lowerCache) lowerCache->beginInstructionFetch();
+}
+
+void Cache::endInstructionFetch() {
+  if (lowerCache) lowerCache->endInstructionFetch();
+  --instructionFetchDepth;
+}
+
 uint32_t Cache::readMetadata(CacheFaultField field, uint32_t value) {
-  if (!faultsEnabled || cacheFault.field != field) {
+  if (!faultsEnabled || instructionFetchDepth != 0 || cacheFault.field != field ||
+      !flipMetadataBit(faultRandomGenerator)) {
     return value;
   }
   const uint32_t mask = uint32_t{1} << cacheFault.bitPosition;
@@ -330,7 +345,7 @@ uint32_t Cache::readMetadata(CacheFaultField field, uint32_t value) {
   case FaultType::STUCK_AT_0: return value & ~mask;
   case FaultType::STUCK_AT_1: return value | mask;
   case FaultType::BIT_FLIP:
-    return flipMetadataBit(faultRandomGenerator) ? value ^ mask : value;
+    return value ^ mask;
   }
   return value;
 }

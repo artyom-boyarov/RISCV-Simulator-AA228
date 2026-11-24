@@ -66,6 +66,10 @@ public:
   void enableFaults(const CacheFault &fault);
   void disableFaults();
 
+  // Suppress metadata faults during an instruction fetch, including lower levels.
+  void beginInstructionFetch();
+  void endInstructionFetch();
+
   Statistics statistics;
 
 private:
@@ -77,6 +81,7 @@ private:
   Policy policy;
   std::vector<Block> blocks;
   bool faultsEnabled = false;
+  unsigned instructionFetchDepth = 0;
   CacheFault cacheFault{};
   std::mt19937 faultRandomGenerator{std::random_device{}()};
   std::bernoulli_distribution flipMetadataBit{0.5};
