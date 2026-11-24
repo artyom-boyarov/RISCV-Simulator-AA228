@@ -10,3 +10,5 @@ cacti/cacti
 d4-7/
 
 dump.txt
+__pycache__/
+*/**/__pycache__/
