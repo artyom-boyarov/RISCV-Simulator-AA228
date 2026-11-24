@@ -8,7 +8,7 @@ fi
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source_file=$1
-output_file=${2:-${source_file%.c}.riscv}
+output_file=${2:-$script_dir/kernels/bin/$(basename -- "${source_file%.c}").riscv}
 
 if [[ ! -f "$source_file" || "$source_file" != *.c ]]; then
     echo "Expected an existing C source file: $source_file" >&2
@@ -19,7 +19,14 @@ if [[ "$source_file" -ef "$output_file" ]]; then
     exit 1
 fi
 
+source_dir=$(cd -- "$(dirname -- "$source_file")" && pwd)
+extra_sources=()
+if [[ "$source_dir" == "$script_dir/kernels/smoke/test" && "$(basename -- "$source_file")" != lib.c ]]; then
+    extra_sources+=("$script_dir/kernels/smoke/test/lib.c")
+fi
+mkdir -p -- "$(dirname -- "$output_file")"
 "${RISCV_GCC:-riscv64-unknown-elf-gcc}" \
-    -march=rv64i -mabi=lp64 -O0 -ffreestanding -nostdlib -static \
-    -Wl,-e,_start "$script_dir/test/start.S" "$source_file" -o "$output_file"
+    -march=rv64i -mabi=lp64 -ffreestanding -nostdlib -static \
+    -Wl,-e,_start -Wl,--no-relax -Wl,--section-start=.memory_region=0x1000 \
+    "$script_dir/kernels/start.S" "$source_file" "${extra_sources[@]}" -o "$output_file"
 echo "Built $output_file"

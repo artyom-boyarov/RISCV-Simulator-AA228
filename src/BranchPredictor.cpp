@@ -5,6 +5,7 @@
 #include "BranchPredictor.h"
 #include "Debug.h"
 
+
 BranchPredictor::BranchPredictor() {
   for (int i = 0; i < PRED_BUF_SIZE; ++i) {
     this->predbuf[i] = WEAK_TAKEN;
@@ -15,11 +16,27 @@ BranchPredictor::~BranchPredictor() {}
 
 bool BranchPredictor::predict(uint32_t pc, uint32_t insttype, int64_t op1,
                               int64_t op2, int64_t offset) {
+  const bool prediction = predictNormally(pc, insttype, op1, op2, offset);
+  return faultsEnabled && faultDistribution(randomGenerator) ? !prediction
+                                                               : prediction;
+}
+
+void BranchPredictor::enableFaults(const Fault &fault) {
+  faultDistribution = std::bernoulli_distribution(fault.rate);
+  faultsEnabled = true;
+}
+
+void BranchPredictor::disableFaults() { faultsEnabled = false; }
+
+bool BranchPredictor::predictNormally(uint32_t pc, uint32_t insttype, int64_t op1,
+                                      int64_t op2, int64_t offset) {
   switch (this->strategy) {
   case NT:
     return false;
-  case AT:
-    return true;
+  case AT: {
+    return takenDistribution(randomGenerator);
+  }
+    
   case BTFNT: {
     if (offset >= 0) {
       return false;
@@ -73,7 +90,7 @@ std::string BranchPredictor::strategyName() {
   case NT:
     return "Always Not Taken";
   case AT:
-    return "Always Taken";
+    return "Random Taken (70%)";
   case BTFNT:
     return "Back Taken Forward Not Taken";
   case BPB:

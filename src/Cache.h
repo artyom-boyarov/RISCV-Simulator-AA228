@@ -8,8 +8,10 @@
 #define CACHE_H
 
 #include <cstdint>
+#include <random>
 #include <vector>
 
+#include "Faults.h"
 #include "MemoryManager.h"
 
 class MemoryManager;
@@ -61,6 +63,9 @@ public:
   void printInfo(bool verbose);
   void printStatistics();
 
+  void enableFaults(const CacheFault &fault);
+  void disableFaults();
+
   Statistics statistics;
 
 private:
@@ -71,9 +76,15 @@ private:
   Cache *lowerCache;
   Policy policy;
   std::vector<Block> blocks;
+  bool faultsEnabled = false;
+  CacheFault cacheFault{};
+  std::mt19937 faultRandomGenerator{std::random_device{}()};
+  std::bernoulli_distribution flipMetadataBit{0.5};
+
+  uint32_t readMetadata(CacheFaultField field, uint32_t value);
 
   void initCache();
-  void loadBlockFromLowerLevel(uint32_t addr, uint32_t *cycles = nullptr);
+  uint32_t loadBlockFromLowerLevel(uint32_t addr, uint32_t *cycles = nullptr);
   uint32_t getReplacementBlockId(uint32_t begin, uint32_t end);
   void writeBlockToLowerLevel(Block &b);
 

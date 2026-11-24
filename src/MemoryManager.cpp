@@ -75,6 +75,10 @@ bool MemoryManager::setByte(uint32_t addr, uint8_t val, uint32_t *cycles) {
   uint32_t i = this->getFirstEntryId(addr);
   uint32_t j = this->getSecondEntryId(addr);
   uint32_t k = this->getPageOffset(addr);
+
+  // if (addr == this->fault_addr) {
+  //   this->memory[i][j][k] = val | (0x1 << 3);
+  // }
   this->memory[i][j][k] = val;
   return true;
 }
@@ -241,7 +245,30 @@ uint32_t MemoryManager::getSecondEntryId(uint32_t addr) {
   return (addr >> 12) & 0x3FF;
 }
 
-uint32_t MemoryManager::getPageOffset(uint32_t addr) { return addr & 0xFFF; }
+uint32_t MemoryManager::getPageOffset(uint32_t addr) {
+  uint32_t offset = addr & 0xFFF;
+  if (!faultsEnabled) {
+    return offset;
+  }
+
+  const uint32_t mask = uint32_t{1} << memoryFault.bitPosition;
+  switch (memoryFault.type) {
+  case FaultType::STUCK_AT_0:
+    return offset & ~mask;
+  case FaultType::STUCK_AT_1:
+    return offset | mask;
+  case FaultType::BIT_FLIP:
+    return flipOffsetBit(faultRandomGenerator) ? offset ^ mask : offset;
+  }
+  return offset;
+}
+
+void MemoryManager::enableFaults(const MemoryFault &fault) {
+  memoryFault = fault;
+  faultsEnabled = true;
+}
+
+void MemoryManager::disableFaults() { faultsEnabled = false; }
 
 bool MemoryManager::isAddrExist(uint32_t addr) {
   uint32_t i = this->getFirstEntryId(addr);

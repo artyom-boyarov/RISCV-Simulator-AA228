@@ -13,6 +13,7 @@
 #include "BranchPredictor.h"
 #include "Cache.h"
 #include "Debug.h"
+#include "FaultConfig.h"
 #include "MemoryManager.h"
 #include "Simulator.h"
 
@@ -22,10 +23,12 @@ void printElfInfo(ELFIO::elfio *reader);
 void loadElfToMemory(ELFIO::elfio *reader, MemoryManager *memory);
 
 char *elfFile = nullptr;
+char *faultFile = nullptr;
 bool verbose = 0;
 bool isSingleStep = 0;
 bool dumpHistory = 0;
 bool showStatistics = true;
+bool useCache = true;
 uint32_t stackBaseAddr = 0x80000000;
 uint32_t stackSize = 0x400000;
 MemoryManager memory;
@@ -38,6 +41,16 @@ int main(int argc, char **argv) {
   if (!parseParameters(argc, argv)) {
     printUsage();
     exit(-1);
+  }
+
+  std::vector<FaultConfig> faults;
+  if (faultFile) {
+    try {
+      faults = readFaultConfig(faultFile);
+    } catch (const std::exception &e) {
+      fprintf(stderr, "Fault configuration error: %s\n", e.what());
+      return 1;
+    }
   }
 
   // Init cache
@@ -68,7 +81,7 @@ int main(int argc, char **argv) {
   l2Cache = new Cache(&memory, l2Policy, l3Cache);
   l1Cache = new Cache(&memory, l1Policy, l2Cache);
 
-  memory.setCache(l1Cache);
+  memory.setCache(useCache ? l1Cache : nullptr);
 
   // Read ELF file
   ELFIO::elfio reader;
@@ -94,6 +107,15 @@ int main(int argc, char **argv) {
   simulator.branchPredictor->strategy = strategy;
   simulator.pc = reader.get_entry();
   simulator.initStack(stackBaseAddr, stackSize);
+  for (const auto &fault : faults) {
+    if (fault.location == FaultLocation::MEMORY_CONTROLLER) {
+      memory.enableFaults(fault.memory);
+    } else if (fault.location == FaultLocation::BRANCH_PREDICTOR) {
+      branchPredictor.enableFaults(fault.branch);
+    } else {
+      l1Cache->enableFaults(fault.cache);
+    }
+  }
   simulator.simulate();
 
   if (dumpHistory) {
@@ -110,6 +132,10 @@ int main(int argc, char **argv) {
 bool parseParameters(int argc, char **argv) {
   // Read Parameters
   for (int i = 1; i < argc; ++i) {
+    if (std::string(argv[i]) == "--no-cache") {
+      useCache = false;
+      continue;
+    }
     if (argv[i][0] == '-') {
       switch (argv[i][1]) {
       case 'v':
@@ -123,6 +149,10 @@ bool parseParameters(int argc, char **argv) {
         break;
       case 'q':
         showStatistics = false;
+        break;
+      case 'f':
+        if (i + 1 >= argc || faultFile != nullptr) return false;
+        faultFile = argv[++i];
         break;
       case 'b':
         if (i + 1 < argc) {
@@ -161,10 +191,12 @@ bool parseParameters(int argc, char **argv) {
 }
 
 void printUsage() {
-  printf("Usage: Simulator riscv-elf-file [-v] [-s] [-d] [-q] [-b param]\n");
+  printf("Usage: Simulator riscv-elf-file [-v] [-s] [-d] [-q] [-b param] [-f fault-file] [--no-cache]\n");
   printf("Parameters: \n\t[-v] verbose output \n\t[-s] single step\n");
   printf("\t[-d] dump memory and register trace to dump.txt\n");
   printf("\t[-q] suppress statistics\n");
+  printf("\t[-f fault-file] load fault configuration\n");
+  printf("\t[--no-cache] bypass the cache hierarchy\n");
   printf("\t[-b param] branch perdiction strategy, accepted param AT, NT, "
          "BTFNT, BPB\n");
 }

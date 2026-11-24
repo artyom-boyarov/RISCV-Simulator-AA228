@@ -40,11 +40,15 @@ uint32_t Cache::getBlockId(uint32_t addr) {
   // iterate over the given set
   for (uint32_t i = id * policy.associativity;
        i < (id + 1) * policy.associativity; ++i) {
-    if (this->blocks[i].id != id) {
+    if (readMetadata(CacheFaultField::ID, this->blocks[i].id) != id) {
+      if (faultsEnabled && cacheFault.field == CacheFaultField::ID) {
+        continue;
+      }
       fprintf(stderr, "Inconsistent ID in block %d\n", i);
       exit(-1);
     }
-    if (this->blocks[i].valid && this->blocks[i].tag == tag) {
+    if (readMetadata(CacheFaultField::VALID, this->blocks[i].valid) &&
+        readMetadata(CacheFaultField::TAG, this->blocks[i].tag) == tag) {
       return i;
     }
   }
@@ -69,16 +73,13 @@ uint8_t Cache::getByte(uint32_t addr, uint32_t *cycles) {
   // Else, find the data in memory or other level of cache
   this->statistics.numMiss++;
   this->statistics.totalCycles += this->policy.missLatency;
-  this->loadBlockFromLowerLevel(addr, cycles);
+  blockId = this->loadBlockFromLowerLevel(addr, cycles);
 
   // The block is in top level cache now, return directly
-  if ((blockId = this->getBlockId(addr)) != -1) {
+  {
     uint32_t offset = this->getOffset(addr);
     this->blocks[blockId].lastReference = this->referenceCounter;
     return this->blocks[blockId].data[offset];
-  } else {
-    fprintf(stderr, "Error: data not in top level cache!\n");
-    exit(-1);
   }
 }
 
@@ -109,17 +110,14 @@ void Cache::setByte(uint32_t addr, uint8_t val, uint32_t *cycles) {
   this->statistics.totalCycles += this->policy.missLatency;
 
   if (this->writeAllocate) {
-    this->loadBlockFromLowerLevel(addr, cycles);
+    blockId = this->loadBlockFromLowerLevel(addr, cycles);
 
-    if ((blockId = this->getBlockId(addr)) != -1) {
+    {
       uint32_t offset = this->getOffset(addr);
       this->blocks[blockId].modified = true;
       this->blocks[blockId].lastReference = this->referenceCounter;
       this->blocks[blockId].data[offset] = val;
       return;
-    } else {
-      fprintf(stderr, "Error: data not in top level cache!\n");
-      exit(-1);
     }
   } else {
     if (this->lowerCache == nullptr) {
@@ -204,7 +202,7 @@ void Cache::initCache() {
   }
 }
 
-void Cache::loadBlockFromLowerLevel(uint32_t addr, uint32_t *cycles) {
+uint32_t Cache::loadBlockFromLowerLevel(uint32_t addr, uint32_t *cycles) {
   uint32_t blockSize = this->policy.blockSize;
 
   // Initialize new block from memory
@@ -232,19 +230,20 @@ void Cache::loadBlockFromLowerLevel(uint32_t addr, uint32_t *cycles) {
   uint32_t blockIdEnd = (id + 1) * this->policy.associativity;
   uint32_t replaceId = this->getReplacementBlockId(blockIdBegin, blockIdEnd);
   Block replaceBlock = this->blocks[replaceId];
-  if (this->writeBack && replaceBlock.valid &&
-      replaceBlock.modified) { // write back to memory
+  if (this->writeBack && readMetadata(CacheFaultField::VALID, replaceBlock.valid) &&
+      readMetadata(CacheFaultField::MODIFIED, replaceBlock.modified)) {
     this->writeBlockToLowerLevel(replaceBlock);
     this->statistics.totalCycles += this->policy.missLatency;
   }
 
   this->blocks[replaceId] = b;
+  return replaceId;
 }
 
 uint32_t Cache::getReplacementBlockId(uint32_t begin, uint32_t end) {
   // Find invalid block first
   for (uint32_t i = begin; i < end; ++i) {
-    if (!this->blocks[i].valid)
+    if (!readMetadata(CacheFaultField::VALID, this->blocks[i].valid))
       return i;
   }
 
@@ -311,5 +310,27 @@ uint32_t Cache::getOffset(uint32_t addr) {
 uint32_t Cache::getAddr(Cache::Block &b) {
   uint32_t offsetBits = log2i(policy.blockSize);
   uint32_t idBits = log2i(policy.blockNum / policy.associativity);
-  return (b.tag << (offsetBits + idBits)) | (b.id << offsetBits);
+  return (readMetadata(CacheFaultField::TAG, b.tag) << (offsetBits + idBits)) |
+         (readMetadata(CacheFaultField::ID, b.id) << offsetBits);
+}
+
+void Cache::enableFaults(const CacheFault &fault) {
+  cacheFault = fault;
+  faultsEnabled = true;
+}
+
+void Cache::disableFaults() { faultsEnabled = false; }
+
+uint32_t Cache::readMetadata(CacheFaultField field, uint32_t value) {
+  if (!faultsEnabled || cacheFault.field != field) {
+    return value;
+  }
+  const uint32_t mask = uint32_t{1} << cacheFault.bitPosition;
+  switch (cacheFault.type) {
+  case FaultType::STUCK_AT_0: return value & ~mask;
+  case FaultType::STUCK_AT_1: return value | mask;
+  case FaultType::BIT_FLIP:
+    return flipMetadataBit(faultRandomGenerator) ? value ^ mask : value;
+  }
+  return value;
 }

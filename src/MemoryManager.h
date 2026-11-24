@@ -8,10 +8,12 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <random>
 
 #include <elfio/elfio.hpp>
 
 #include "Cache.h"
+#include "Faults.h"
 
 class Cache;
 
@@ -47,6 +49,10 @@ public:
 
   void setCache(Cache *cache);  
 
+  // Configure and enable a fault in one of the 12 page-offset bits.
+  void enableFaults(const MemoryFault &fault);
+  void disableFaults();
+
 private:
   uint32_t getFirstEntryId(uint32_t addr);
   uint32_t getSecondEntryId(uint32_t addr);
@@ -55,6 +61,11 @@ private:
 
   uint8_t **memory[1024];
   Cache *cache;
+
+  bool faultsEnabled = false;
+  MemoryFault memoryFault{};
+  std::mt19937 faultRandomGenerator{std::random_device{}()};
+  std::bernoulli_distribution flipOffsetBit{0.5};
 };
 
 #endif

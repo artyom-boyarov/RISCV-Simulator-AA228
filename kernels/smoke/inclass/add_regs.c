@@ -6,5 +6,11 @@ int main() {
     b = a * 2;
     c = b << 2;
     d = a + b + c + i;
-    return d;
+
+    if (d == 34) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }

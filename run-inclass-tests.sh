@@ -1,9 +1,8 @@
-mkdir build
-cd build
-cmake ..
-make
-./Simulator ../test-inclass/add.riscv
-./Simulator ../test-inclass/mul-div.riscv
-./Simulator ../test-inclass/n!.riscv
-./Simulator ../test-inclass/qsort.riscv
-./Simulator ../test-inclass/simple-function.riscv
+#!/usr/bin/env bash
+set -euo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+cmake -S "$root" -B "$root/build"
+cmake --build "$root/build"
+for name in add mul-div 'n!' qsort simple-function; do
+    "$root/build/Simulator" "$root/kernels/bin/inclass/$name.riscv"
+done
