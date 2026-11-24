@@ -3,7 +3,11 @@ Belief update + value of information for chip fault diagnosis.
 
 Inputs you supply later:
   L[t, s, o] = P(outcome o | test t, fault state s)   (shape: n_tests x n_states x n_outcomes)
+        - Note: outcomes may not be consecutively increasing. Maybe have array to map return values -> outcome index.
+        - Test t: kernel.
+
   cost[t]    = cost of running test t
+    - How long test takes to run.
   G[s, g]    = 1 if state s belongs to diagnosis group g (e.g. its component), else 0
                (use np.eye(n_states) to diagnose individual states)
 """
