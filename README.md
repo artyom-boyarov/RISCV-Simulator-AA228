@@ -204,6 +204,33 @@ necessarily representative of FarmShare. For `next_test`, choose the conversion
 from seconds to utility deliberately; one second is not inherently one reward
 point.
 
+### Experiment with belief updates
+
+Use the collected likelihoods to run random kernels against a fixed fault:
+
+```sh
+python3 random_guessing.py likelihood-campaign --state 0 --seed 42 --max-steps 100
+```
+
+The script starts with a uniform prior over all enumerated states, runs a
+randomly selected kernel, and uses its observed outcome with
+`VOI_Belief.update_belief`. After each update it prints the five most likely
+states. It stops once the highest belief is strictly greater than 0.9 and says
+whether that state is the selected fault. Omit `--state` to choose a random
+fault configuration (excluding `no_fault`), or pass an exact state name from
+`states.csv`, including `no_fault`. `--seed` controls state
+and test selection; it does not seed the simulator's fault randomness.
+`--threshold` changes the threshold, and `--max-steps` is an optional limit.
+Without a limit, the experiment can run indefinitely if states cannot be
+distinguished by the available tests.
+
+The likelihoods are unsmoothed estimates from a finite number of runs. An
+unseen outcome or one with zero probability under all currently possible
+states cannot be used for a Bayes update, so the script stops and reports it.
+An observed outcome with zero likelihood for the actual state eliminates that
+state; the script warns when this happens. It also warns if the local simulator
+binary differs from the binary used to collect the campaign.
+
 ### Fault configuration files
 
 Ready-to-use branch predictor and memory examples are in `faults/`.
