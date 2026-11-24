@@ -1,0 +1,5 @@
+type = cache
+field = valid
+bit = 0
+fault = STUCK_AT_1
+rate = 0.5

@@ -172,6 +172,38 @@ there, or transfer the same binaries with the campaign and repository. The
 branch predictor affects prediction statistics and timing, so architectural
 return values alone may not distinguish branch faults.
 
+### Measure fault-free test costs
+
+After aggregating a campaign, measure its tests serially on the machine where
+the costs will be used:
+
+```sh
+python3 measure_kernel_costs.py likelihood-campaign
+```
+
+The script runs each test 10 times without faults, using the campaign's branch
+strategy and cache mode, and checks each return against the campaign's no-fault
+baseline. It saves `test_costs.csv` and `test_costs.npz` in campaign test order.
+The NPZ contains `cost` (mean wall time in seconds), per-run `seconds`, test
+names, medians, standard deviations, and simulator and host metadata. `--runs`,
+`--timeout`, `--simulator`, and `--output` can be changed; use `--overwrite` to
+replace existing cost files.
+
+```python
+likelihoods = np.load("likelihood-campaign/likelihoods.npz")
+timings = np.load("likelihood-campaign/test_costs.npz")
+assert np.array_equal(likelihoods["test_names"], timings["test_names"])
+cost_seconds = timings["cost"]
+# Choose a conversion to the same utility units as VOI_Belief.py's rewards.
+cost = cost_seconds * utility_per_second
+```
+
+Wall time includes simulator process startup and initialization as well as
+execution. It depends on the machine and load, so local measurements are not
+necessarily representative of FarmShare. For `next_test`, choose the conversion
+from seconds to utility deliberately; one second is not inherently one reward
+point.
+
 ### Fault configuration files
 
 Ready-to-use branch predictor and memory examples are in `faults/`.

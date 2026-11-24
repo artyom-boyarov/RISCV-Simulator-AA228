@@ -49,6 +49,9 @@ if(BUILD_TESTING)
         add_test(NAME likelihood_runner_test COMMAND ${PYTHON_EXECUTABLE}
                  ${CMAKE_SOURCE_DIR}/test/likelihood_runner_test.py)
         set_tests_properties(likelihood_runner_test PROPERTIES SKIP_RETURN_CODE 77)
+        add_test(NAME kernel_cost_test COMMAND ${PYTHON_EXECUTABLE}
+                 ${CMAKE_SOURCE_DIR}/test/kernel_cost_test.py)
+        set_tests_properties(kernel_cost_test PROPERTIES SKIP_RETURN_CODE 77)
         add_test(NAME cache_fault_configs_test COMMAND ${PYTHON_EXECUTABLE}
                  ${CMAKE_SOURCE_DIR}/test/cache_fault_configs_test.py
                  ${CMAKE_SOURCE_DIR}/faults/cache)

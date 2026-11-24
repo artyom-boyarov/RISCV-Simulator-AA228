@@ -1,0 +1,5 @@
+type = cache
+field = id
+bit = 0
+fault = BIT_FLIP
+rate = 1.0
