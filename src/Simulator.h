@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "BranchPredictor.h"
+#include "BranchResolution.h"
 #include "MemoryManager.h"
 
 namespace RISCV {
@@ -173,6 +174,7 @@ public:
   uint32_t maximumStackSize;
   MemoryManager *memory;
   BranchPredictor *branchPredictor;
+  BranchResolution branchResolution;
 
   Simulator(MemoryManager *memory, BranchPredictor *predictor);
   ~Simulator();

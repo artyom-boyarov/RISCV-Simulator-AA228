@@ -937,6 +937,8 @@ void Simulator::excecute() {
 
   // Pipeline Related Code
   if (isBranch(inst)) {
+    branch = this->branchResolution.resolve(branch);
+    dRegPC = this->dReg.pc + (branch ? offset : 0);
     if (predictedBranch == branch) {
       this->history.predictedBranch++;
     } else {

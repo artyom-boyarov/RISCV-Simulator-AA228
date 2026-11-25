@@ -68,12 +68,13 @@ FaultConfig makeConfig(const std::map<std::string, std::string> &properties) {
     auto rate = properties.find("rate");
     result.cache.rate = rate == properties.end() ?
         (result.cache.type == FaultType::BIT_FLIP ? 0.5 : 1.0) : parseRate(rate->second);
-  } else if (type == "branch") {
-    result.location = FaultLocation::BRANCH_PREDICTOR;
-    result.branch.location = result.location;
-    result.branch.rate = parseRate(require("rate"));
+  } else if (type == "branch_resolution") {
+    result.location = FaultLocation::BRANCH_RESOLUTION;
+    result.branchResolution.location = result.location;
+    result.branchResolution.type = parseType(require("fault"));
+    result.branchResolution.rate = parseRate(require("rate"));
   } else {
-    throw std::runtime_error("type must be memory, cache, or branch");
+    throw std::runtime_error("type must be memory, cache, or branch_resolution");
   }
   return result;
 }

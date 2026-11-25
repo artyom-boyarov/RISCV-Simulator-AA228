@@ -9,7 +9,7 @@ import tempfile
 
 import numpy as np
 
-from generate_likelihoods import load_manifest, resolve_path, run_one
+from generate_likelihoods import load_manifest, require_supported_state, resolve_path, run_one
 from VOI_Belief import update_belief
 
 
@@ -62,6 +62,7 @@ def main():
     rng = random.Random(args.seed)
     chosen = select_state(args.state, states, rng)
     state = manifest["states"][chosen]
+    require_supported_state(state)
     config = campaign / state["config"] if state["config"] else None
     outcome_index = {label: index for index, label in enumerate(outcomes)}
     belief = np.full(len(states), 1.0 / len(states))

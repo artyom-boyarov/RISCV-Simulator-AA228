@@ -8,7 +8,7 @@ struct FaultConfig {
   FaultLocation location;
   MemoryFault memory{};
   CacheFault cache{};
-  Fault branch{};
+  BranchResolutionFault branchResolution{};
 };
 
 // Throws std::runtime_error with file and line information on invalid input.

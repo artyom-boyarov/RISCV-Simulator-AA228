@@ -14,7 +14,7 @@ def report(path):
         names = data["state_names"].tolist()
         tests = data["test_names"].tolist()
         outcomes = data["outcome_labels"].tolist()
-        runs = int(data["runs"])
+        runs = data["runs_per_state"].tolist() if "runs_per_state" in data else [int(data["runs"])] * len(names)
     if likelihoods.ndim != 3 or likelihoods.shape != (len(tests), len(names), len(outcomes)):
         raise ValueError("Likelihood tensor dimensions do not match its labels")
     if not np.isfinite(likelihoods).all():
@@ -29,7 +29,8 @@ def report(path):
     lines = [
         "# States with identical observed likelihoods", "",
         f"Source: `{path}`. {len(tests)} tests, {len(names)} states, "
-        f"{len(outcomes)} observed outcome labels, {runs} runs per test and state.", "",
+        f"{len(outcomes)} observed outcome labels, "
+        f"{', '.join(map(str, sorted(set(runs))))} runs per test and state.", "",
         f"{len(duplicates)} matching groups contain {ambiguous} states; "
         f"the other {len(names) - ambiguous} states have unique observed likelihoods.", "",
         "States in each group have exactly the same empirical likelihood for every "
@@ -43,7 +44,7 @@ def report(path):
     ]
     for number, indices in enumerate(duplicates, 1):
         lines += [f"## Group {number}: {len(indices)} states", ""]
-        lines += [f"- `{i}`: `{names[i]}`" for i in indices]
+        lines += [f"- `{i}`: `{names[i]}` ({runs[i]} runs per test)" for i in indices]
         lines += ["", "Shared observed likelihoods:", ""]
         for t, test in enumerate(tests):
             row = likelihoods[t, indices[0], :]

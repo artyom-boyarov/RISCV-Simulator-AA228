@@ -4,7 +4,7 @@
 enum class FaultLocation {
     CACHE,
     MEMORY_CONTROLLER,
-    BRANCH_PREDICTOR,
+    BRANCH_RESOLUTION,
 };
 enum class FaultType {
     BIT_FLIP,
@@ -34,5 +34,9 @@ struct CacheFault : public Fault {
 
 struct MemoryFault : public Fault {
     uint8_t bitPosition;
+    FaultType type;
+};
+
+struct BranchResolutionFault : public Fault {
     FaultType type;
 };

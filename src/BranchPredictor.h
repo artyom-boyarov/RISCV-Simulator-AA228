@@ -15,8 +15,6 @@
 #include <random>
 #include <string>
 
-#include "Faults.h"
-
 const int PRED_BUF_SIZE = 4096;
 
 class BranchPredictor {
@@ -37,16 +35,9 @@ public:
   // For Branch Prediction Buffer 
   void update(uint32_t pc, bool branch);
 
-  void enableFaults(const Fault &fault);
-  void disableFaults();
-
   std::string strategyName();
   
 private:
-  bool predictNormally(uint32_t pc, uint32_t insttype, int64_t op1,
-                       int64_t op2, int64_t offset);
-  bool faultsEnabled = false;
-  std::bernoulli_distribution faultDistribution{0.0};
   std::mt19937 randomGenerator{std::random_device{}()};
   std::bernoulli_distribution takenDistribution{0.7};
   enum PredictorState {

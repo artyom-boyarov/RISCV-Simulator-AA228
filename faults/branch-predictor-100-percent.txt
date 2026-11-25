@@ -1,3 +1,0 @@
-# Invert every branch prediction.
-type = branch
-rate = 1.0

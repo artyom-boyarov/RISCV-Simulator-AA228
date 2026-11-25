@@ -49,7 +49,9 @@ def fault_properties(text):
                 raise ValueError("Fault file is missing required properties")
             block["rate"] = float(block.get("rate", 0.5 if block["fault"] == "BIT_FLIP" else 1.0))
             block["bit"] = int(block["bit"])
-        elif kind == "branch":
+        elif kind == "branch_resolution":
+            if "fault" not in block:
+                raise ValueError("Branch resolution fault is missing fault property")
             block["rate"] = float(block["rate"])
         else:
             raise ValueError(f"Unknown fault type: {kind}")
@@ -94,8 +96,8 @@ def prepare(args):
     campaign = Path(args.campaign).resolve()
     if campaign.exists() and any(campaign.iterdir()):
         raise ValueError(f"Campaign directory is not empty: {campaign}")
-    if args.runs < 1 or args.timeout <= 0:
-        raise ValueError("runs and timeout must be positive")
+    if args.runs < 1 or args.branch_runs < 1 or args.timeout <= 0:
+        raise ValueError("runs, branch-runs, and timeout must be positive")
     simulator = resolve_path(args.simulator).resolve()
     if not simulator.is_file() or not os.access(simulator, os.X_OK):
         raise ValueError(f"Simulator executable not found: {simulator}")
@@ -131,6 +133,7 @@ def prepare(args):
     (campaign / "states").mkdir()
     for i, state in enumerate(states):
         state["index"] = i
+        state["runs"] = args.branch_runs if any(p["type"] == "branch_resolution" for p in state["properties"]) else args.runs
         content = state.pop("content")
         state["config"] = None
         if content is not None:
@@ -143,13 +146,20 @@ def prepare(args):
     (campaign / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     write_csv(campaign / "tests.csv", tests, ("index", "name", "path", "no_cache"))
     state_rows = [dict(s, properties=json.dumps(s["properties"], sort_keys=True)) for s in states]
-    write_csv(campaign / "states.csv", state_rows, ("index", "name", "config", "properties"))
-    print(f"Prepared {len(tests)} tests × {len(states)} states × {args.runs} runs = "
-          f"{len(tests) * len(states) * args.runs} simulations in {campaign}", flush=True)
+    write_csv(campaign / "states.csv", state_rows, ("index", "name", "config", "properties", "runs"))
+    print(f"Prepared {len(tests)} tests × {len(states)} states = "
+          f"{len(tests) * sum(s['runs'] for s in states)} simulations in {campaign} "
+          f"({args.runs} runs normally, {args.branch_runs} for branch resolution faults)", flush=True)
 
 
 def load_manifest(campaign):
     return json.loads((campaign / "manifest.json").read_text())
+
+
+def require_supported_state(state):
+    if any(block.get("type") == "branch" for block in state.get("properties", [])):
+        raise ValueError("This campaign contains a removed branch predictor fault; "
+                         "use the original simulator or prepare a new campaign")
 
 
 def run_one(simulator, kernel, config, no_cache, strategy, timeout, scratch):
@@ -183,6 +193,8 @@ def run_state(campaign_arg, index):
     if index < 0 or index >= len(manifest["states"]):
         raise ValueError(f"State index must be between 0 and {len(manifest['states']) - 1}")
     state = manifest["states"][index]
+    require_supported_state(state)
+    runs = state.get("runs", manifest["runs"])
     destination = campaign / "states" / f"{index:04d}.npz"
     if destination.exists():
         raise FileExistsError(f"State result already exists: {destination}")
@@ -194,13 +206,13 @@ def run_state(campaign_arg, index):
             kernel = resolve_path(test["path"])
             results = [run_one(str(simulator), str(kernel), config, test["no_cache"],
                                manifest["branch_strategy"], manifest["timeout_seconds"], scratch)
-                       for _ in range(manifest["runs"])]
+                       for _ in range(runs)]
             row, durations = zip(*results)
             outcomes.append(row)
             times.append(durations)
             counts = {label: row.count(label) for label in sorted(set(row))}
             print(f"state {index:04d} {state['name']} | test {test['index']:02d} {test['name']} | "
-                  f"{manifest['runs']} runs: {counts}", flush=True)
+                  f"{runs} runs: {counts}", flush=True)
     # Atomic finalization prevents an interrupted task from looking complete.
     with tempfile.NamedTemporaryFile(dir=destination.parent, suffix=".npz", delete=False) as temp:
         temporary = Path(temp.name)
@@ -218,6 +230,7 @@ def aggregate(args):
     campaign = Path(args.campaign).resolve()
     manifest = load_manifest(campaign)
     states, tests, runs = manifest["states"], manifest["tests"], manifest["runs"]
+    runs_per_state = np.asarray([s.get("runs", runs) for s in states], dtype=np.int64)
     missing = [s["index"] for s in states if not (campaign / "states" / f"{s['index']:04d}.npz").is_file()]
     if missing:
         raise ValueError(f"Missing {len(missing)} state results; first indices: {missing[:20]}")
@@ -225,11 +238,11 @@ def aggregate(args):
     if destination.exists():
         raise FileExistsError(f"Aggregate already exists: {destination}")
     state_outcomes, state_seconds = [], []
-    for state in states:
+    for state, state_runs in zip(states, runs_per_state):
         with np.load(campaign / "states" / f"{state['index']:04d}.npz", allow_pickle=False) as data:
             if (int(data["state_index"]) != state["index"] or
-                    data["outcomes"].shape != (len(tests), runs) or
-                    data["seconds"].shape != (len(tests), runs)):
+                    data["outcomes"].shape != (len(tests), state_runs) or
+                    data["seconds"].shape != (len(tests), state_runs)):
                 raise ValueError(f"Invalid result for state {state['index']}")
             state_outcomes.append(data["outcomes"].tolist())
             state_seconds.append(data["seconds"])
@@ -241,23 +254,28 @@ def aggregate(args):
         for t, row in enumerate(rows):
             for label in row:
                 counts[t, s, index[label]] += 1
-    seconds = np.stack(state_seconds, axis=1)
+    seconds = np.full((len(tests), len(states), int(runs_per_state.max())), np.nan)
+    for s, values in enumerate(state_seconds):
+        seconds[:, s, :runs_per_state[s]] = values
+    mean_seconds = np.stack([values.mean(axis=1) for values in state_seconds], axis=1)
     write_csv(campaign / "outcomes.csv", [{"index": i, "label": label} for i, label in enumerate(labels)],
               ("index", "label"))
     # Keep an interrupted aggregation from leaving a partial final result.
     with tempfile.NamedTemporaryFile(dir=campaign, suffix=".npz", delete=False) as temp:
         temporary = Path(temp.name)
         try:
-            np.savez_compressed(temp, L=counts / runs, counts=counts,
+            np.savez_compressed(temp, L=counts / runs_per_state[np.newaxis, :, np.newaxis], counts=counts,
                                 outcome_labels=np.asarray(labels), test_names=np.asarray([t["name"] for t in tests]),
                                 state_names=np.asarray([s["name"] for s in states]),
                                 state_properties=np.asarray([json.dumps(s["properties"], sort_keys=True) for s in states]),
-                                seconds=seconds, mean_seconds=seconds.mean(axis=2), runs=runs)
+                                seconds=seconds, mean_seconds=mean_seconds, runs=runs,
+                                runs_per_state=runs_per_state)
         except BaseException:
             temporary.unlink(missing_ok=True)
             raise
     os.replace(temporary, destination)
-    print(f"Saved {destination}: L shape {counts.shape}; each row has {runs} observations", flush=True)
+    print(f"Saved {destination}: L shape {counts.shape}; observations per state: "
+          f"{sorted(set(runs_per_state.tolist()))}", flush=True)
 
 
 def _run_state_task(task):
@@ -300,6 +318,8 @@ def add_prepare_arguments(parser):
     parser.add_argument("campaign")
     parser.add_argument("--simulator", default="build/Simulator")
     parser.add_argument("--runs", type=int, default=10)
+    parser.add_argument("--branch-runs", type=int, default=100,
+                        help="runs per test for states containing a branch resolution fault (default: 100)")
     parser.add_argument("--timeout", type=float, default=10.0, help="seconds per simulation")
     parser.add_argument("--branch-strategy", choices=("AT", "NT", "BTFNT", "BPB"), default="NT")
     parser.add_argument("--kernel", action="append", default=[], help="select kernel binary; repeatable")

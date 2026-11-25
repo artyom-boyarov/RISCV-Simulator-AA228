@@ -94,8 +94,8 @@ int main(int argc, char **argv) {
   for (const auto &fault : faults) {
     if (fault.location == FaultLocation::MEMORY_CONTROLLER) {
       memory.enableFaults(fault.memory);
-    } else if (fault.location == FaultLocation::BRANCH_PREDICTOR) {
-      branchPredictor.enableFaults(fault.branch);
+    } else if (fault.location == FaultLocation::BRANCH_RESOLUTION) {
+      simulator.branchResolution.enableFaults(fault.branchResolution);
     } else {
       l1Cache->enableFaults(fault.cache);
     }

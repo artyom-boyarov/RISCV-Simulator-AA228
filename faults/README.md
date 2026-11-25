@@ -8,7 +8,9 @@ Pass a file to the simulator with `-f`, for example:
   -f faults/memory/bit11-stuck-at-0-100.txt
 ```
 
-The branch predictor files invert 50% or 100% of branch predictions.
+The three `branch-resolution-*-50.txt` files independently apply stuck-at-0,
+stuck-at-1, or bit-flip faults to each conditional branch decision with 50%
+probability. They do not affect unconditional jumps.
 `memory/` covers all combinations of page-offset bits 0–11, the three fault
 types, and 50% or 100% rates. Run
 `python3 faults/generate_memory_faults.py` to create missing files.

@@ -89,7 +89,8 @@ used to focus on the memory controller.
 requires NumPy and built simulator
 and kernel binaries. By default it selects the seven fault-detection kernels,
 the Sobel workload, every `faults/**/*.txt` file, and a no-fault state. It runs
-each test 10 times for each state. On an allocated compute node, a batch can
+each test 100 times for branch resolution fault states and 10 times for other
+states, including the no-fault baseline. On an allocated compute node, a batch can
 be started directly in a new directory with the desired number of processes:
 
 ```sh
@@ -106,7 +107,7 @@ To run only selected fault files in a new campaign, repeat `--fault`:
 ```sh
 python3 generate_likelihoods.py batch subset-campaign --processes 4 \
   --fault faults/memory/bit11-stuck-at-0-100.txt \
-  --fault faults/branch-predictor-50-percent.txt
+  --fault faults/branch-resolution-bit-flip-50.txt
 ```
 
 The no-fault baseline is included automatically.
@@ -181,17 +182,18 @@ smoothing is applied. Labels include `return:<integer>`, `timeout`, nonzero
 host `exit:<status>`, and `missing_or_ambiguous_return`. Failures and timeouts
 count as observations rather than being silently dropped. Only outcomes observed
 in the campaign are included. The file also contains `counts`, `state_properties`,
-per-run `seconds`, `mean_seconds`, and `runs`. The kernel's printed return value,
+per-run `seconds`, `mean_seconds`, `runs` (the default for ordinary states),
+and `runs_per_state` (the actual denominator for each state). The `seconds`
+array is padded with NaN after a state's last run when counts differ. The kernel's printed return value,
 not the host exit status, is used for successful guest exits.
 
-`batch --runs N`, `--timeout SECONDS`, `--branch-strategy NT`, repeatable
+`batch --runs N`, `--branch-runs N` (branch resolution faults), `--timeout SECONDS`, `--branch-strategy NT`, repeatable
 `--kernel PATH` and `--fault PATH`, and repeatable `--uncached-test TEST_NAME`
 configure a campaign. Cache is enabled by default for every test. Use the same
 cache mode for all states of a test; an uncached test cannot observe cache
 faults. Prepare and run on the cluster after building the simulator
 there, or transfer the same binaries with the campaign and repository. The
-branch predictor affects prediction statistics and timing, so architectural
-return values alone may not distinguish branch faults.
+branch predictor affects prediction statistics and timing.
 
 ### Measure fault-free test costs
 
@@ -264,7 +266,7 @@ state; the script warns when this happens.
 
 ### Fault configuration files
 
-Ready-to-use branch predictor and memory examples are in `faults/`.
+Ready-to-use branch resolution and memory examples are in `faults/`.
 Use `-f` to enable faults during execution:
 
 ```sh
@@ -273,7 +275,7 @@ Use `-f` to enable faults during execution:
 
 Each fault block begins with `type = ...`, followed by `key = value` lines.
 Blank lines and `#` comments are ignored. A file can contain one memory fault,
-one branch fault, and one L1 cache fault at a time; repeat `type` to start
+one branch resolution fault, and one L1 cache fault; repeat `type` to start
 another block. Later blocks for the same component replace earlier ones. For example:
 
 ```text
@@ -286,18 +288,22 @@ field = tag
 fault = BIT_FLIP
 bit = 0
 
-type = branch
+type = branch_resolution
+fault = STUCK_AT_1
 rate = 0.5
 ```
 
 Memory accepts `fault` values `STUCK_AT_0`, `STUCK_AT_1`, or `BIT_FLIP` and a
 page-offset `bit` from 0–11. Cache faults apply only to L1 and accept those
 fault values, a `field` of `valid`, `modified`, `tag`, or `id`, and a
-`bit` (0 for valid or modified, 0–31 for tag or id). Branch faults use a
+`bit` (0 for valid or modified, 0–31 for tag or id). Branch resolution faults use a
 `rate` of `0.5` or `1.0`. The rate is the probability that the configured fault
-applies on each eligible access or prediction. For memory and cache faults,
+applies on each eligible access or resolved conditional branch. For memory and cache faults,
 `rate` is optional: it defaults to `0.5` for `BIT_FLIP` and `1.0` for stuck
-faults. Branch faults require a rate.
+faults. Branch resolution faults require a rate and
+`fault`, with the same three values as memory. It changes the resolved decision
+(0 = not taken, 1 = taken), including the outcome used for prediction recovery
+and predictor updates. It does not affect unconditional jumps.
 For C++ callers, `Fault::rate` defaults to `1.0` for every fault type; set it
 explicitly to `0.5` when a 50% bit-flip rate is desired.
 The cache level is always L1; a `level` property is ignored. Configuration
@@ -421,22 +427,17 @@ The `isWrite` and `isHit` fields are not used
 by this model. Faults start disabled; disabling one does not undo prior cache
 or memory changes.
 
-### Branch predictor faults
+### Branch resolution faults
 
-Configure a `Fault` with a rate of `0.5` or `1.0`:
-
-```cpp
-Fault fault{};
-fault.location = FaultLocation::BRANCH_PREDICTOR;
-fault.rate = 0.5;
-predictor.enableFaults(fault);
-// Run the simulation.
-predictor.disableFaults();
-```
-
-Each prediction is independently inverted with the configured probability,
-for any predictor strategy. Faults start disabled; disabling them restores the
-strategy's normal behavior. Predictor state updates continue as usual.
+Branch resolution faults can be controlled independently via
+`simulator.branchResolution.enableFaults(fault)` and `disableFaults()`, using
+a `BranchResolutionFault`. The supplied files in `faults/branch-resolution-*.txt`
+apply each fault with 50% probability per conditional branch. They can change
+the return value or prevent the program from terminating; the likelihood
+runner records timeouts as outcomes. Existing campaign manifests retain their
+original states, so prepare a new campaign to include these files.
+Old campaigns containing predictor faults require the original simulator to
+run those states; their saved likelihood data remains usable for analysis.
 
 When `main` returns, the startup code passes its result in `a0` to exit
 system call 93. The simulator prints `Program return value:` followed by the
