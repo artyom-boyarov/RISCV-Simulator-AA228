@@ -11,7 +11,6 @@ except ImportError:
 
 root = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(root))
-from generate_likelihoods import checksum
 
 with tempfile.TemporaryDirectory() as directory:
     path = pathlib.Path(directory)
@@ -22,9 +21,9 @@ with tempfile.TemporaryDirectory() as directory:
     kernel.touch()
     campaign = path / "campaign"
     campaign.mkdir()
-    manifest = {"simulator_sha256": checksum(simulator), "branch_strategy": "NT",
+    manifest = {"branch_strategy": "NT",
                 "tests": [{"name": "kernel", "path": str(kernel),
-                           "sha256": checksum(kernel), "no_cache": False}]}
+                           "no_cache": False}]}
     (campaign / "manifest.json").write_text(json.dumps(manifest))
     np.savez(campaign / "likelihoods.npz", test_names=np.asarray(["kernel"]),
              state_names=np.asarray(["no_fault"]), outcome_labels=np.asarray(["return:0"]),

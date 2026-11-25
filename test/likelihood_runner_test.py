@@ -76,3 +76,4 @@ print(2 if 'field = valid' in config else 0)
         with np.load(batch / "states" / f"{state:04d}.npz", allow_pickle=False) as data:
             pids.append(int(data["worker_pid"]))
     assert len(set(pids)) == 3, pids
+

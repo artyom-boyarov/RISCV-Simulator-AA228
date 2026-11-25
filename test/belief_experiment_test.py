@@ -11,7 +11,6 @@ except ImportError:
 
 root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(root))
-from generate_likelihoods import checksum
 from random_guessing import select_state
 import random
 
@@ -36,11 +35,10 @@ print(9 if fault == 'zero evidence' else 1)
     (campaign / "configs").mkdir(parents=True)
     for index, content in enumerate(("known", "zero evidence")):
         (campaign / "configs" / f"{index}.txt").write_text(content)
-    states = [{"index": i, "name": f"state-{i}", "config": f"configs/{i}.txt",
-               "config_sha256": checksum(campaign / "configs" / f"{i}.txt")}
+    states = [{"index": i, "name": f"state-{i}", "config": f"configs/{i}.txt"}
               for i in range(2)]
-    manifest = {"simulator_sha256": checksum(simulator), "branch_strategy": "NT", "timeout_seconds": 2,
-                "tests": [{"name": "kernel", "path": str(kernel), "sha256": checksum(kernel), "no_cache": False}],
+    manifest = {"branch_strategy": "NT", "timeout_seconds": 2,
+                "tests": [{"name": "kernel", "path": str(kernel), "no_cache": False}],
                 "states": states}
     (campaign / "manifest.json").write_text(json.dumps(manifest))
 
@@ -50,7 +48,7 @@ print(9 if fault == 'zero evidence' else 1)
                  outcome_labels=np.asarray(["return:0", "return:1", "return:9"]))
 
     def run(state):
-        return subprocess.run([sys.executable, str(root / "experiment_belief.py"), str(campaign),
+        return subprocess.run([sys.executable, str(root / "random_guessing.py"), str(campaign),
                                "--simulator", str(simulator), "--state", str(state),
                                "--seed", "42", "--max-steps", "4"], text=True, capture_output=True)
 
