@@ -1,0 +1,3 @@
+# Invert each branch prediction independently with probability 0.5.
+type = branch
+rate = 0.5

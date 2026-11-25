@@ -1,0 +1,4 @@
+type = memory
+fault = BIT_FLIP
+bit = 0
+rate = 1.0

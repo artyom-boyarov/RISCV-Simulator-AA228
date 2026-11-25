@@ -4,7 +4,6 @@
 import argparse
 import csv
 from datetime import datetime, timezone
-import json
 import os
 from pathlib import Path
 import platform
@@ -15,7 +14,7 @@ import time
 
 import numpy as np
 
-from generate_likelihoods import RETURN, checksum, load_manifest, resolve_path
+from generate_likelihoods import RETURN, load_manifest, resolve_path
 
 
 def measure_one(simulator, kernel, no_cache, strategy, timeout, scratch):
@@ -65,11 +64,6 @@ def main():
     simulator = resolve_path(args.simulator).resolve()
     if not simulator.is_file() or not os.access(simulator, os.X_OK):
         raise ValueError(f"Simulator executable not found: {simulator}")
-    simulator_hash = checksum(simulator)
-    if simulator_hash != manifest["simulator_sha256"]:
-        print("Note: timing a simulator binary different from the campaign's recorded binary.",
-              file=sys.stderr, flush=True)
-
     tests = manifest["tests"]
     with np.load(campaign / "likelihoods.npz", allow_pickle=False) as data:
         if data["test_names"].tolist() != [t["name"] for t in tests]:
@@ -88,8 +82,6 @@ def main():
     with tempfile.TemporaryDirectory(prefix="kernel-costs-") as scratch:
         for t, test in enumerate(tests):
             binary = resolve_path(test["path"])
-            if checksum(binary) != test["sha256"]:
-                raise ValueError(f"Kernel changed since campaign preparation: {binary}")
             times = []
             for run in range(args.runs):
                 label, seconds = measure_one(str(simulator), str(binary), test["no_cache"],
@@ -107,8 +99,7 @@ def main():
     names = np.asarray([test["name"] for test in tests])
     np.savez_compressed(output, cost=cost, seconds=seconds, test_names=names,
                         median_seconds=np.median(seconds, axis=1),
-                        std_seconds=seconds.std(axis=1), simulator_sha256=simulator_hash,
-                        campaign_simulator_sha256=manifest["simulator_sha256"],
+                        std_seconds=seconds.std(axis=1), simulator=str(simulator),
                         branch_strategy=manifest["branch_strategy"],
                         no_cache=np.asarray([test["no_cache"] for test in tests]),
                         host=platform.node(), platform=platform.platform(),

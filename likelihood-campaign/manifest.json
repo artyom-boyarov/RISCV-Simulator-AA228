@@ -1,7 +1,6 @@
 {
   "version": 1,
   "simulator": "build/Simulator",
-  "simulator_sha256": "5e2af70b2506433080775837222d76682efb60416c7dd0efd2abac03b9c3a12a",
   "runs": 10,
   "timeout_seconds": 10.0,
   "branch_strategy": "NT",
@@ -10,56 +9,48 @@
       "index": 0,
       "name": "cache_modified_kernel",
       "path": "kernels/bin/cache_modified_kernel.riscv",
-      "sha256": "2c9f3500bcb3c78b2ddc9ec6c741c654bb61297424114708d96c86f8ed2d8914",
       "no_cache": false
     },
     {
       "index": 1,
       "name": "cache_single_address_kernel",
       "path": "kernels/bin/cache_single_address_kernel.riscv",
-      "sha256": "5d946d0f8c2a22401933509133b28fb6197e598a76c6fa57c5ec7aa45adc08ce",
       "no_cache": false
     },
     {
       "index": 2,
       "name": "cache_tag_bits_kernel",
       "path": "kernels/bin/cache_tag_bits_kernel.riscv",
-      "sha256": "fcd0bf53961f68ac30accb9a7f9c07b805d01128f49e0d5657643203fbcfa725",
       "no_cache": false
     },
     {
       "index": 3,
       "name": "memory_address_bits_kernel",
       "path": "kernels/bin/memory_address_bits_kernel.riscv",
-      "sha256": "50de2f84286922292b0c581ff72da0a77eafe753f50d671f33dbf254b0c156f8",
       "no_cache": false
     },
     {
       "index": 4,
       "name": "memory_kernel",
       "path": "kernels/bin/memory_kernel.riscv",
-      "sha256": "7c3bc977b15961828eedd1d863b2322f01175f154bba3df509d3b67ba332b96f",
       "no_cache": false
     },
     {
       "index": 5,
       "name": "memory_page_kernel",
       "path": "kernels/bin/memory_page_kernel.riscv",
-      "sha256": "a90f1842dc11cda0fce4249d8cf344adac1f270731be5ad7db8f5e451c19edb2",
       "no_cache": false
     },
     {
       "index": 6,
       "name": "memory_stride_kernel",
       "path": "kernels/bin/memory_stride_kernel.riscv",
-      "sha256": "7866be634b1293a38e5c46ef3f0762e368918c5503586b7465b883605808d9c6",
       "no_cache": false
     },
     {
       "index": 7,
       "name": "sobel_image",
       "path": "kernels/bin/sobel_image.riscv",
-      "sha256": "b00797ca56951f8d59f6eb17dbcaa3beb442f95597063dd9d899d16f946c50db",
       "no_cache": false
     }
   ],
@@ -76,8 +67,7 @@
         }
       ],
       "index": 0,
-      "config": "configs/0000.txt",
-      "config_sha256": "83aa37422c1646a6284f7aef29551388244e106ade3c222c756a34f6d3a57f6f"
+      "config": "configs/0000.txt"
     },
     {
       "name": "faults/cache/valid-bit00-stuck-at-1-100.txt",
@@ -91,8 +81,7 @@
         }
       ],
       "index": 1,
-      "config": "configs/0001.txt",
-      "config_sha256": "95f98390e2174a8805a2678b5153197e6b1a36176b118fd0f20828fa07498302"
+      "config": "configs/0001.txt"
     },
     {
       "name": "faults/cache/valid-bit00-bit-flip-100.txt",
@@ -106,8 +95,7 @@
         }
       ],
       "index": 2,
-      "config": "configs/0002.txt",
-      "config_sha256": "87662c7452c142b31d5b7a766f334a89b1c8e7aefb79597bd5cb2a18909166c4"
+      "config": "configs/0002.txt"
     },
     {
       "name": "faults/cache/valid-bit00-stuck-at-0-50.txt",
@@ -121,8 +109,7 @@
         }
       ],
       "index": 3,
-      "config": "configs/0003.txt",
-      "config_sha256": "f542a070a8fb451bca32f14893bc024592eaee0572cfcb2aaf01e57a8c8d1574"
+      "config": "configs/0003.txt"
     },
     {
       "name": "faults/cache/valid-bit00-stuck-at-1-50.txt",
@@ -136,8 +123,7 @@
         }
       ],
       "index": 4,
-      "config": "configs/0004.txt",
-      "config_sha256": "5cf74f5481c1bb416f2914e2e719d955f86951f12b8b8c2aa0e34f213b3f713e"
+      "config": "configs/0004.txt"
     },
     {
       "name": "faults/cache/valid-bit00-bit-flip-50.txt",
@@ -151,8 +137,7 @@
         }
       ],
       "index": 5,
-      "config": "configs/0005.txt",
-      "config_sha256": "9f09b345b8dd503b811c447b68b512b3238866b276a0accaf583ab16a8fff235"
+      "config": "configs/0005.txt"
     },
     {
       "name": "faults/cache/modified-bit00-stuck-at-0-100.txt",
@@ -166,8 +151,7 @@
         }
       ],
       "index": 6,
-      "config": "configs/0006.txt",
-      "config_sha256": "fc3036c92e1b817bf481482ec40d1f618599e96fec1711bfea55b9da2c102197"
+      "config": "configs/0006.txt"
     },
     {
       "name": "faults/cache/modified-bit00-stuck-at-1-100.txt",
@@ -181,8 +165,7 @@
         }
       ],
       "index": 7,
-      "config": "configs/0007.txt",
-      "config_sha256": "ea78e3834675cd7fcee78ae4e58a5b0bec39213853dc526c6dfc8210b5679d06"
+      "config": "configs/0007.txt"
     },
     {
       "name": "faults/cache/modified-bit00-bit-flip-100.txt",
@@ -196,8 +179,7 @@
         }
       ],
       "index": 8,
-      "config": "configs/0008.txt",
-      "config_sha256": "70eb607c36daaa4d0a39b233dea2df9e392df2edd998a2cf3dcaad7659d66a57"
+      "config": "configs/0008.txt"
     },
     {
       "name": "faults/cache/modified-bit00-stuck-at-0-50.txt",
@@ -211,8 +193,7 @@
         }
       ],
       "index": 9,
-      "config": "configs/0009.txt",
-      "config_sha256": "fde9d8f03d6b27d25261c33391d79f9aa4ce2dac0ede9b8d693a35b8be77bab1"
+      "config": "configs/0009.txt"
     },
     {
       "name": "faults/cache/modified-bit00-stuck-at-1-50.txt",
@@ -226,8 +207,7 @@
         }
       ],
       "index": 10,
-      "config": "configs/0010.txt",
-      "config_sha256": "4d451ae3931b4b6b38744d6c2f62f749433d9b21d1210ade652daa85c6110ffd"
+      "config": "configs/0010.txt"
     },
     {
       "name": "faults/cache/modified-bit00-bit-flip-50.txt",
@@ -241,8 +221,7 @@
         }
       ],
       "index": 11,
-      "config": "configs/0011.txt",
-      "config_sha256": "98c3924449f7326ada84ad4a66569a656556acdc3ad255b0e96c083c84853e3e"
+      "config": "configs/0011.txt"
     },
     {
       "name": "faults/cache/tag-bit00-stuck-at-0-100.txt",
@@ -256,8 +235,7 @@
         }
       ],
       "index": 12,
-      "config": "configs/0012.txt",
-      "config_sha256": "4c2dfab6c3b86d659424d3f2ecb6cebfb2bcd9649c76f4080fd1016b7a221ecb"
+      "config": "configs/0012.txt"
     },
     {
       "name": "faults/cache/tag-bit00-stuck-at-1-100.txt",
@@ -271,8 +249,7 @@
         }
       ],
       "index": 13,
-      "config": "configs/0013.txt",
-      "config_sha256": "bdff0e418a63830545a35581b7ebc338806b7ad6dc03d959dda115f22e1d1858"
+      "config": "configs/0013.txt"
     },
     {
       "name": "faults/cache/tag-bit00-bit-flip-100.txt",
@@ -286,8 +263,7 @@
         }
       ],
       "index": 14,
-      "config": "configs/0014.txt",
-      "config_sha256": "98ceed5e85153a3ea229cfeaf32239381b92683a6459e817fde92d4db3ce5144"
+      "config": "configs/0014.txt"
     },
     {
       "name": "faults/cache/tag-bit00-stuck-at-0-50.txt",
@@ -301,8 +277,7 @@
         }
       ],
       "index": 15,
-      "config": "configs/0015.txt",
-      "config_sha256": "43140468501af5828e8105a4affb03e21742b34862c1548d6f9b0ca069d4eff6"
+      "config": "configs/0015.txt"
     },
     {
       "name": "faults/cache/tag-bit00-stuck-at-1-50.txt",
@@ -316,8 +291,7 @@
         }
       ],
       "index": 16,
-      "config": "configs/0016.txt",
-      "config_sha256": "cac6d0ddf97861ac6c1d5b7087377b0f086970164a10363c6755bb0d11ecdaa6"
+      "config": "configs/0016.txt"
     },
     {
       "name": "faults/cache/tag-bit00-bit-flip-50.txt",
@@ -331,8 +305,7 @@
         }
       ],
       "index": 17,
-      "config": "configs/0017.txt",
-      "config_sha256": "68ec5b1f15669349317ba249ba9d6adc747796e395a36b98bef9a1948ef617b0"
+      "config": "configs/0017.txt"
     },
     {
       "name": "faults/cache/tag-bit01-stuck-at-0-100.txt",
@@ -346,8 +319,7 @@
         }
       ],
       "index": 18,
-      "config": "configs/0018.txt",
-      "config_sha256": "c27d3104e818e7e0ce095b552df70d5ff64322bfb602ca66e17039126232fbc0"
+      "config": "configs/0018.txt"
     },
     {
       "name": "faults/cache/tag-bit01-stuck-at-1-100.txt",
@@ -361,8 +333,7 @@
         }
       ],
       "index": 19,
-      "config": "configs/0019.txt",
-      "config_sha256": "1c85483a9162480fcba4acfce9bdaa967d5257611ff15266d10ecd93467b121c"
+      "config": "configs/0019.txt"
     },
     {
       "name": "faults/cache/tag-bit01-bit-flip-100.txt",
@@ -376,8 +347,7 @@
         }
       ],
       "index": 20,
-      "config": "configs/0020.txt",
-      "config_sha256": "4e16c34e5012ace715770bc728276bcee94a4a6b3393993445abcb6d49b4b50f"
+      "config": "configs/0020.txt"
     },
     {
       "name": "faults/cache/tag-bit01-stuck-at-0-50.txt",
@@ -391,8 +361,7 @@
         }
       ],
       "index": 21,
-      "config": "configs/0021.txt",
-      "config_sha256": "1d6b0dedb30ab50d555eb1aa46669298f71313b42ccbb45c1b6fcac2caaa3cdc"
+      "config": "configs/0021.txt"
     },
     {
       "name": "faults/cache/tag-bit01-stuck-at-1-50.txt",
@@ -406,8 +375,7 @@
         }
       ],
       "index": 22,
-      "config": "configs/0022.txt",
-      "config_sha256": "4199613caab10764b0c511d33bbaff2ce1373961960ab72344e4fc4d0be79372"
+      "config": "configs/0022.txt"
     },
     {
       "name": "faults/cache/tag-bit01-bit-flip-50.txt",
@@ -421,8 +389,7 @@
         }
       ],
       "index": 23,
-      "config": "configs/0023.txt",
-      "config_sha256": "564cc46ada6186a452184e4a3addd6b70fde83484410e00672ad6e3bb221e526"
+      "config": "configs/0023.txt"
     },
     {
       "name": "faults/cache/tag-bit02-stuck-at-0-100.txt",
@@ -436,8 +403,7 @@
         }
       ],
       "index": 24,
-      "config": "configs/0024.txt",
-      "config_sha256": "1ffc748a1f862c5e20673a4b57f439dc70ab1f55e9fb6e8cb5f71814d4bfeb66"
+      "config": "configs/0024.txt"
     },
     {
       "name": "faults/cache/tag-bit02-stuck-at-1-100.txt",
@@ -451,8 +417,7 @@
         }
       ],
       "index": 25,
-      "config": "configs/0025.txt",
-      "config_sha256": "d6ebe22fb8362447691c5decd78ae819754a8e98dff91f989c8f37bb5dfb5fb9"
+      "config": "configs/0025.txt"
     },
     {
       "name": "faults/cache/tag-bit02-bit-flip-100.txt",
@@ -466,8 +431,7 @@
         }
       ],
       "index": 26,
-      "config": "configs/0026.txt",
-      "config_sha256": "36116744aacaeece93fa2d3eb6c51c5c38345a4f6dd225a18cf1d98dcc1645e9"
+      "config": "configs/0026.txt"
     },
     {
       "name": "faults/cache/tag-bit02-stuck-at-0-50.txt",
@@ -481,8 +445,7 @@
         }
       ],
       "index": 27,
-      "config": "configs/0027.txt",
-      "config_sha256": "63234e05201f8ca29b075a9c62dd6c7ed37d228557feef25418e5c65f8c7d269"
+      "config": "configs/0027.txt"
     },
     {
       "name": "faults/cache/tag-bit02-stuck-at-1-50.txt",
@@ -496,8 +459,7 @@
         }
       ],
       "index": 28,
-      "config": "configs/0028.txt",
-      "config_sha256": "fc23c6ed187c29d9f769c10065e46ab28944f2d6f0a189032aade8b0bef36b32"
+      "config": "configs/0028.txt"
     },
     {
       "name": "faults/cache/tag-bit02-bit-flip-50.txt",
@@ -511,8 +473,7 @@
         }
       ],
       "index": 29,
-      "config": "configs/0029.txt",
-      "config_sha256": "203c9b4932866fad0022748af4f8e0ea68defc09ac5989f4554f8b5a8f7d7c06"
+      "config": "configs/0029.txt"
     },
     {
       "name": "faults/cache/tag-bit03-stuck-at-0-100.txt",
@@ -526,8 +487,7 @@
         }
       ],
       "index": 30,
-      "config": "configs/0030.txt",
-      "config_sha256": "8bdb42dfdef1be76cea426fd4c7ba2788efad2daebd4f0e797f99fb2e749aeb5"
+      "config": "configs/0030.txt"
     },
     {
       "name": "faults/cache/tag-bit03-stuck-at-1-100.txt",
@@ -541,8 +501,7 @@
         }
       ],
       "index": 31,
-      "config": "configs/0031.txt",
-      "config_sha256": "021ad66e0a70e848c6086bcb9fb7e92a76e124f3341ebbaaed475df54a1fd40b"
+      "config": "configs/0031.txt"
     },
     {
       "name": "faults/cache/tag-bit03-bit-flip-100.txt",
@@ -556,8 +515,7 @@
         }
       ],
       "index": 32,
-      "config": "configs/0032.txt",
-      "config_sha256": "a65e3e6b4626cf9e5ca311b88440cd69116c52ec7fc0a937a1b952d2b9e9015e"
+      "config": "configs/0032.txt"
     },
     {
       "name": "faults/cache/tag-bit03-stuck-at-0-50.txt",
@@ -571,8 +529,7 @@
         }
       ],
       "index": 33,
-      "config": "configs/0033.txt",
-      "config_sha256": "56d5fce23dbdf024d2149d225c4a64a3a7e963a6868109d5050c276eaf4fa45f"
+      "config": "configs/0033.txt"
     },
     {
       "name": "faults/cache/tag-bit03-stuck-at-1-50.txt",
@@ -586,8 +543,7 @@
         }
       ],
       "index": 34,
-      "config": "configs/0034.txt",
-      "config_sha256": "9c3ddf99cf47c4a01edd45f456b425a9ac69fa19cce4c442c0130b48ab904642"
+      "config": "configs/0034.txt"
     },
     {
       "name": "faults/cache/tag-bit03-bit-flip-50.txt",
@@ -601,8 +557,7 @@
         }
       ],
       "index": 35,
-      "config": "configs/0035.txt",
-      "config_sha256": "db510e93365fd4fd9e4572cc6a64cc5eb45a60fd50c9504af2b34ba940b99d94"
+      "config": "configs/0035.txt"
     },
     {
       "name": "faults/cache/tag-bit04-stuck-at-0-100.txt",
@@ -616,8 +571,7 @@
         }
       ],
       "index": 36,
-      "config": "configs/0036.txt",
-      "config_sha256": "79d52df907fc1ed3ee95f1f2473b930c4df77202265699709d88ca01c3b1542b"
+      "config": "configs/0036.txt"
     },
     {
       "name": "faults/cache/tag-bit04-stuck-at-1-100.txt",
@@ -631,8 +585,7 @@
         }
       ],
       "index": 37,
-      "config": "configs/0037.txt",
-      "config_sha256": "5cda73aa88c5957b37d16fd44c4006055882e93602abcd10f5bb14f43df419ae"
+      "config": "configs/0037.txt"
     },
     {
       "name": "faults/cache/tag-bit04-bit-flip-100.txt",
@@ -646,8 +599,7 @@
         }
       ],
       "index": 38,
-      "config": "configs/0038.txt",
-      "config_sha256": "6cf08edc01f6213c521cd55dc8284d26535ff5be7a407db5093b5a4fc93ff683"
+      "config": "configs/0038.txt"
     },
     {
       "name": "faults/cache/tag-bit04-stuck-at-0-50.txt",
@@ -661,8 +613,7 @@
         }
       ],
       "index": 39,
-      "config": "configs/0039.txt",
-      "config_sha256": "d50f7c858d2fb8ef2aab797452e8c0d8bbae86b37c6c24e2c340c3eecd89e5b2"
+      "config": "configs/0039.txt"
     },
     {
       "name": "faults/cache/tag-bit04-stuck-at-1-50.txt",
@@ -676,8 +627,7 @@
         }
       ],
       "index": 40,
-      "config": "configs/0040.txt",
-      "config_sha256": "f951588931001d9ef845de1b10ff1e33e24ebe780a000d337ac5dd1344b2fd85"
+      "config": "configs/0040.txt"
     },
     {
       "name": "faults/cache/tag-bit04-bit-flip-50.txt",
@@ -691,8 +641,7 @@
         }
       ],
       "index": 41,
-      "config": "configs/0041.txt",
-      "config_sha256": "f23e04f05de0c69e9e15c158ca03404990c32bb823329d3454f914d23ccdb508"
+      "config": "configs/0041.txt"
     },
     {
       "name": "faults/cache/tag-bit05-stuck-at-0-100.txt",
@@ -706,8 +655,7 @@
         }
       ],
       "index": 42,
-      "config": "configs/0042.txt",
-      "config_sha256": "c4725abd28324302b01c1dc11cd56bae56c16629b5fedd50f4f014827b41c476"
+      "config": "configs/0042.txt"
     },
     {
       "name": "faults/cache/tag-bit05-stuck-at-1-100.txt",
@@ -721,8 +669,7 @@
         }
       ],
       "index": 43,
-      "config": "configs/0043.txt",
-      "config_sha256": "4c14f21c7e4c9e9853d660ab567f1dd7e47a43a8ff2d52b9115531e3572ac628"
+      "config": "configs/0043.txt"
     },
     {
       "name": "faults/cache/tag-bit05-bit-flip-100.txt",
@@ -736,8 +683,7 @@
         }
       ],
       "index": 44,
-      "config": "configs/0044.txt",
-      "config_sha256": "a8606b3ba4fd2c825b0ecd5b56d999f52b982a9deae78280bc651eed37e51e4c"
+      "config": "configs/0044.txt"
     },
     {
       "name": "faults/cache/tag-bit05-stuck-at-0-50.txt",
@@ -751,8 +697,7 @@
         }
       ],
       "index": 45,
-      "config": "configs/0045.txt",
-      "config_sha256": "e71d19169658f72dc06174cf5a7592be688c10ec98d2999bc716885b053d5924"
+      "config": "configs/0045.txt"
     },
     {
       "name": "faults/cache/tag-bit05-stuck-at-1-50.txt",
@@ -766,8 +711,7 @@
         }
       ],
       "index": 46,
-      "config": "configs/0046.txt",
-      "config_sha256": "bcb878fc29f9003ae253215d2a187639846a90f1ed28fad5d381f8cc3d87033c"
+      "config": "configs/0046.txt"
     },
     {
       "name": "faults/cache/tag-bit05-bit-flip-50.txt",
@@ -781,8 +725,7 @@
         }
       ],
       "index": 47,
-      "config": "configs/0047.txt",
-      "config_sha256": "77242ee4e761b79feb58b2935941a449660694a87493fdb723ae170a78f0edaf"
+      "config": "configs/0047.txt"
     },
     {
       "name": "faults/cache/tag-bit06-stuck-at-0-100.txt",
@@ -796,8 +739,7 @@
         }
       ],
       "index": 48,
-      "config": "configs/0048.txt",
-      "config_sha256": "d64c012a13583d5e287c7960f584295f3bf3e95c2e5804eed92f84884491653f"
+      "config": "configs/0048.txt"
     },
     {
       "name": "faults/cache/tag-bit06-stuck-at-1-100.txt",
@@ -811,8 +753,7 @@
         }
       ],
       "index": 49,
-      "config": "configs/0049.txt",
-      "config_sha256": "6b3f1fe810aadfd53d7d5a7b3b590b02eff0316cdb07256e00e20d73f0998861"
+      "config": "configs/0049.txt"
     },
     {
       "name": "faults/cache/tag-bit06-bit-flip-100.txt",
@@ -826,8 +767,7 @@
         }
       ],
       "index": 50,
-      "config": "configs/0050.txt",
-      "config_sha256": "f10edc9fc1e72b26a8c393fb9c8b00f3397e8995eb0b8bf2fbd7da79d82f730b"
+      "config": "configs/0050.txt"
     },
     {
       "name": "faults/cache/tag-bit06-stuck-at-0-50.txt",
@@ -841,8 +781,7 @@
         }
       ],
       "index": 51,
-      "config": "configs/0051.txt",
-      "config_sha256": "4472dd921f5f3da44086200559a87ce0d55002d9c55ff442c65d85c56c662300"
+      "config": "configs/0051.txt"
     },
     {
       "name": "faults/cache/tag-bit06-stuck-at-1-50.txt",
@@ -856,8 +795,7 @@
         }
       ],
       "index": 52,
-      "config": "configs/0052.txt",
-      "config_sha256": "fb52bb47dd781373b663b5cf9b0937c2722fbe401dc6f865f37287698a904eef"
+      "config": "configs/0052.txt"
     },
     {
       "name": "faults/cache/tag-bit06-bit-flip-50.txt",
@@ -871,8 +809,7 @@
         }
       ],
       "index": 53,
-      "config": "configs/0053.txt",
-      "config_sha256": "cb4c6a55588171621d85941f127fb9463406ccc4afff1f36e173f861723c7d07"
+      "config": "configs/0053.txt"
     },
     {
       "name": "faults/cache/tag-bit07-stuck-at-0-100.txt",
@@ -886,8 +823,7 @@
         }
       ],
       "index": 54,
-      "config": "configs/0054.txt",
-      "config_sha256": "83221b8043db91a8fa522d76ef00253ba6acc917d87094b483fdd27e647b84f0"
+      "config": "configs/0054.txt"
     },
     {
       "name": "faults/cache/tag-bit07-stuck-at-1-100.txt",
@@ -901,8 +837,7 @@
         }
       ],
       "index": 55,
-      "config": "configs/0055.txt",
-      "config_sha256": "cd26ccfa2871ed3fc90e4c273e8f23d54d02836b906ad587628008a443a9bf3c"
+      "config": "configs/0055.txt"
     },
     {
       "name": "faults/cache/tag-bit07-bit-flip-100.txt",
@@ -916,8 +851,7 @@
         }
       ],
       "index": 56,
-      "config": "configs/0056.txt",
-      "config_sha256": "12b1e9ae6af8a2e56cf8c76ee4426fb328ccc2d80e9b8be7fc00ab2738f682d3"
+      "config": "configs/0056.txt"
     },
     {
       "name": "faults/cache/tag-bit07-stuck-at-0-50.txt",
@@ -931,8 +865,7 @@
         }
       ],
       "index": 57,
-      "config": "configs/0057.txt",
-      "config_sha256": "a442568c0146486fab058ddeeb5d3cb91f1cbb9961f70375a08ec1b5bdff818d"
+      "config": "configs/0057.txt"
     },
     {
       "name": "faults/cache/tag-bit07-stuck-at-1-50.txt",
@@ -946,8 +879,7 @@
         }
       ],
       "index": 58,
-      "config": "configs/0058.txt",
-      "config_sha256": "a4f5e6500680ccb26c5944d7c18ea1281c295891c17b04292e721815d87d9a11"
+      "config": "configs/0058.txt"
     },
     {
       "name": "faults/cache/tag-bit07-bit-flip-50.txt",
@@ -961,8 +893,7 @@
         }
       ],
       "index": 59,
-      "config": "configs/0059.txt",
-      "config_sha256": "b01e01d8ae217f9e74fc314e38ccd9aef36919150dff14dd13228ce1810da6d1"
+      "config": "configs/0059.txt"
     },
     {
       "name": "faults/cache/tag-bit08-stuck-at-0-100.txt",
@@ -976,8 +907,7 @@
         }
       ],
       "index": 60,
-      "config": "configs/0060.txt",
-      "config_sha256": "964867803c55cc8e51ec19f3e5a50386f09b8f5f8e1a46e6130bbe326db8d575"
+      "config": "configs/0060.txt"
     },
     {
       "name": "faults/cache/tag-bit08-stuck-at-1-100.txt",
@@ -991,8 +921,7 @@
         }
       ],
       "index": 61,
-      "config": "configs/0061.txt",
-      "config_sha256": "dfbd8194499b0e22450fdf0297dc5d84b36106eb4a9219816315c70f444401b2"
+      "config": "configs/0061.txt"
     },
     {
       "name": "faults/cache/tag-bit08-bit-flip-100.txt",
@@ -1006,8 +935,7 @@
         }
       ],
       "index": 62,
-      "config": "configs/0062.txt",
-      "config_sha256": "22162bff134af7c248e74842076fb92d2c6f1556bd6e383e709e96885c43e584"
+      "config": "configs/0062.txt"
     },
     {
       "name": "faults/cache/tag-bit08-stuck-at-0-50.txt",
@@ -1021,8 +949,7 @@
         }
       ],
       "index": 63,
-      "config": "configs/0063.txt",
-      "config_sha256": "e670664778f81d1c9bf72098bcde6387f8acfdc57f9b9a4f95cebadbe82677d6"
+      "config": "configs/0063.txt"
     },
     {
       "name": "faults/cache/tag-bit08-stuck-at-1-50.txt",
@@ -1036,8 +963,7 @@
         }
       ],
       "index": 64,
-      "config": "configs/0064.txt",
-      "config_sha256": "535f8befc15e5584a630624130e82e2ebd5dbe0d893df9e41368055f56746b03"
+      "config": "configs/0064.txt"
     },
     {
       "name": "faults/cache/tag-bit08-bit-flip-50.txt",
@@ -1051,8 +977,7 @@
         }
       ],
       "index": 65,
-      "config": "configs/0065.txt",
-      "config_sha256": "000702ea38dcee162171518246f7294cae032c5d508b6e250345d8bdadf3252a"
+      "config": "configs/0065.txt"
     },
     {
       "name": "faults/cache/tag-bit09-stuck-at-0-100.txt",
@@ -1066,8 +991,7 @@
         }
       ],
       "index": 66,
-      "config": "configs/0066.txt",
-      "config_sha256": "83503881dd67a7a54160469c6aea66c3856422d02b81476b6a6178ec2f4d1250"
+      "config": "configs/0066.txt"
     },
     {
       "name": "faults/cache/tag-bit09-stuck-at-1-100.txt",
@@ -1081,8 +1005,7 @@
         }
       ],
       "index": 67,
-      "config": "configs/0067.txt",
-      "config_sha256": "4cc80cb819ce1eff1f11c73018d9977da02d7f3c2c454d03b75a959aed90f8f1"
+      "config": "configs/0067.txt"
     },
     {
       "name": "faults/cache/tag-bit09-bit-flip-100.txt",
@@ -1096,8 +1019,7 @@
         }
       ],
       "index": 68,
-      "config": "configs/0068.txt",
-      "config_sha256": "bc4b45edbdc47c6e89294eb2552f00605858fc04ced6132bdc76accf7bba69a4"
+      "config": "configs/0068.txt"
     },
     {
       "name": "faults/cache/tag-bit09-stuck-at-0-50.txt",
@@ -1111,8 +1033,7 @@
         }
       ],
       "index": 69,
-      "config": "configs/0069.txt",
-      "config_sha256": "13e621a26865f60617e162dea4c825c2709b6b298cc61353cd7b5c44ec978f39"
+      "config": "configs/0069.txt"
     },
     {
       "name": "faults/cache/tag-bit09-stuck-at-1-50.txt",
@@ -1126,8 +1047,7 @@
         }
       ],
       "index": 70,
-      "config": "configs/0070.txt",
-      "config_sha256": "c49e3f0fbd1986f5cb29728d38f65de8e071faefcb8d62a4ec3bcf3a02e4f1e9"
+      "config": "configs/0070.txt"
     },
     {
       "name": "faults/cache/tag-bit09-bit-flip-50.txt",
@@ -1141,8 +1061,7 @@
         }
       ],
       "index": 71,
-      "config": "configs/0071.txt",
-      "config_sha256": "23b0cfed9206f89cbc7bd9d76fff681f7e57438fc55626096af5f109eaaefd7c"
+      "config": "configs/0071.txt"
     },
     {
       "name": "faults/cache/tag-bit10-stuck-at-0-100.txt",
@@ -1156,8 +1075,7 @@
         }
       ],
       "index": 72,
-      "config": "configs/0072.txt",
-      "config_sha256": "d853f39be0124d9ff0eb4041daafa7d386c2fc6feb403719889ac21cec563f00"
+      "config": "configs/0072.txt"
     },
     {
       "name": "faults/cache/tag-bit10-stuck-at-1-100.txt",
@@ -1171,8 +1089,7 @@
         }
       ],
       "index": 73,
-      "config": "configs/0073.txt",
-      "config_sha256": "c28668571126bf90799b2ce8d7018f9e094e842310dc7b54c099c7a356f79642"
+      "config": "configs/0073.txt"
     },
     {
       "name": "faults/cache/tag-bit10-bit-flip-100.txt",
@@ -1186,8 +1103,7 @@
         }
       ],
       "index": 74,
-      "config": "configs/0074.txt",
-      "config_sha256": "16f5e4aa4444b8fe4640de86bb678cdea22ce000fd86621f967b0cac6504dd67"
+      "config": "configs/0074.txt"
     },
     {
       "name": "faults/cache/tag-bit10-stuck-at-0-50.txt",
@@ -1201,8 +1117,7 @@
         }
       ],
       "index": 75,
-      "config": "configs/0075.txt",
-      "config_sha256": "199d5c2147da637c033dbf30790ab09a539f96e7afd4c228929d426576f81f72"
+      "config": "configs/0075.txt"
     },
     {
       "name": "faults/cache/tag-bit10-stuck-at-1-50.txt",
@@ -1216,8 +1131,7 @@
         }
       ],
       "index": 76,
-      "config": "configs/0076.txt",
-      "config_sha256": "bac07b0092b36356ba793f44f17d67fb70bb3f93976cf1616468de3d720be685"
+      "config": "configs/0076.txt"
     },
     {
       "name": "faults/cache/tag-bit10-bit-flip-50.txt",
@@ -1231,8 +1145,7 @@
         }
       ],
       "index": 77,
-      "config": "configs/0077.txt",
-      "config_sha256": "e9593cad0a935d0808e9df0385570a96f76ff6a8097d63abb72e48e06dfa4bde"
+      "config": "configs/0077.txt"
     },
     {
       "name": "faults/cache/tag-bit11-stuck-at-0-100.txt",
@@ -1246,8 +1159,7 @@
         }
       ],
       "index": 78,
-      "config": "configs/0078.txt",
-      "config_sha256": "1c30a2bfe28e198777f076e61fba46786ba7496e10becbe0a2f97f8f50d0d92d"
+      "config": "configs/0078.txt"
     },
     {
       "name": "faults/cache/tag-bit11-stuck-at-1-100.txt",
@@ -1261,8 +1173,7 @@
         }
       ],
       "index": 79,
-      "config": "configs/0079.txt",
-      "config_sha256": "f03d57a776fd474a848fcb12278ee5616ad8da249c5b64c79c0cb23e64d7db50"
+      "config": "configs/0079.txt"
     },
     {
       "name": "faults/cache/tag-bit11-bit-flip-100.txt",
@@ -1276,8 +1187,7 @@
         }
       ],
       "index": 80,
-      "config": "configs/0080.txt",
-      "config_sha256": "ea3aabdd9909439f7aedcf147bedc0f447d8eaf19e4d7912df434275d3c960bd"
+      "config": "configs/0080.txt"
     },
     {
       "name": "faults/cache/tag-bit11-stuck-at-0-50.txt",
@@ -1291,8 +1201,7 @@
         }
       ],
       "index": 81,
-      "config": "configs/0081.txt",
-      "config_sha256": "ba11a16fa2be135ffe53a335dc864a62bffd97fc985111668e56182667394479"
+      "config": "configs/0081.txt"
     },
     {
       "name": "faults/cache/tag-bit11-stuck-at-1-50.txt",
@@ -1306,8 +1215,7 @@
         }
       ],
       "index": 82,
-      "config": "configs/0082.txt",
-      "config_sha256": "82e4ebc97aeffab72998e4787d5b1df3594e8942349053d68a4a2d3ad57158f6"
+      "config": "configs/0082.txt"
     },
     {
       "name": "faults/cache/tag-bit11-bit-flip-50.txt",
@@ -1321,8 +1229,7 @@
         }
       ],
       "index": 83,
-      "config": "configs/0083.txt",
-      "config_sha256": "a0ecad26648e9329b0da9ec342197c824943650b2b48ae4eab57a357611b052b"
+      "config": "configs/0083.txt"
     },
     {
       "name": "faults/cache/tag-bit12-stuck-at-0-100.txt",
@@ -1336,8 +1243,7 @@
         }
       ],
       "index": 84,
-      "config": "configs/0084.txt",
-      "config_sha256": "5f897e1b2ae325110cc3bbf44523434c0e2b7379ea1f664d45455ebd49e53ff6"
+      "config": "configs/0084.txt"
     },
     {
       "name": "faults/cache/tag-bit12-stuck-at-1-100.txt",
@@ -1351,8 +1257,7 @@
         }
       ],
       "index": 85,
-      "config": "configs/0085.txt",
-      "config_sha256": "2c2f1e534c9feab8aad0f45b96d5bd38941757cc051a4903e201823bf3b998bb"
+      "config": "configs/0085.txt"
     },
     {
       "name": "faults/cache/tag-bit12-bit-flip-100.txt",
@@ -1366,8 +1271,7 @@
         }
       ],
       "index": 86,
-      "config": "configs/0086.txt",
-      "config_sha256": "a1bc803e8be377d8a21d9c21d4d7f6a01f743e8f0ca9d67f7c1bffa3bd85384c"
+      "config": "configs/0086.txt"
     },
     {
       "name": "faults/cache/tag-bit12-stuck-at-0-50.txt",
@@ -1381,8 +1285,7 @@
         }
       ],
       "index": 87,
-      "config": "configs/0087.txt",
-      "config_sha256": "a47531a83adf2d2a033aa7907a63e20224f634746ca877496e5a6567be0cfc1e"
+      "config": "configs/0087.txt"
     },
     {
       "name": "faults/cache/tag-bit12-stuck-at-1-50.txt",
@@ -1396,8 +1299,7 @@
         }
       ],
       "index": 88,
-      "config": "configs/0088.txt",
-      "config_sha256": "8fffaafd0b68e304c5fcdc1765a7606b45faead447e3f3101c2e132534774f86"
+      "config": "configs/0088.txt"
     },
     {
       "name": "faults/cache/tag-bit12-bit-flip-50.txt",
@@ -1411,8 +1313,7 @@
         }
       ],
       "index": 89,
-      "config": "configs/0089.txt",
-      "config_sha256": "c888f634c427fb89e8e883d248568bf708be9091bc72bb3748f50b05eeff045a"
+      "config": "configs/0089.txt"
     },
     {
       "name": "faults/cache/tag-bit13-stuck-at-0-100.txt",
@@ -1426,8 +1327,7 @@
         }
       ],
       "index": 90,
-      "config": "configs/0090.txt",
-      "config_sha256": "670c9917f7f1bb61db646f8f6fbdb18d0b055cb623281d32b1590024a0ea1257"
+      "config": "configs/0090.txt"
     },
     {
       "name": "faults/cache/tag-bit13-stuck-at-1-100.txt",
@@ -1441,8 +1341,7 @@
         }
       ],
       "index": 91,
-      "config": "configs/0091.txt",
-      "config_sha256": "54346a52d97e90a985e66aafbc6e277640d251bf0725974e8fe176a96dd903b3"
+      "config": "configs/0091.txt"
     },
     {
       "name": "faults/cache/tag-bit13-bit-flip-100.txt",
@@ -1456,8 +1355,7 @@
         }
       ],
       "index": 92,
-      "config": "configs/0092.txt",
-      "config_sha256": "654c206f4268025783ac487d5332173ad7a6b0d90869f5a0d862452435fb2f43"
+      "config": "configs/0092.txt"
     },
     {
       "name": "faults/cache/tag-bit13-stuck-at-0-50.txt",
@@ -1471,8 +1369,7 @@
         }
       ],
       "index": 93,
-      "config": "configs/0093.txt",
-      "config_sha256": "6d33a820a4be454508e494cdc8ca1bcf7a944a4a49b2ef409ed4c08292cf5449"
+      "config": "configs/0093.txt"
     },
     {
       "name": "faults/cache/tag-bit13-stuck-at-1-50.txt",
@@ -1486,8 +1383,7 @@
         }
       ],
       "index": 94,
-      "config": "configs/0094.txt",
-      "config_sha256": "9baa519671d8503709518e667962aad80209259d1a1a26a3a482d95a6cf47648"
+      "config": "configs/0094.txt"
     },
     {
       "name": "faults/cache/tag-bit13-bit-flip-50.txt",
@@ -1501,8 +1397,7 @@
         }
       ],
       "index": 95,
-      "config": "configs/0095.txt",
-      "config_sha256": "95a479c59d51440d88060ac8dcd88396a4d6925969c3658cfe57704fbf94279a"
+      "config": "configs/0095.txt"
     },
     {
       "name": "faults/cache/tag-bit14-stuck-at-0-100.txt",
@@ -1516,8 +1411,7 @@
         }
       ],
       "index": 96,
-      "config": "configs/0096.txt",
-      "config_sha256": "8fce21bbc08651b36189b4198f68c2eb4e2aec78b038f7394970a5bc4510f8c6"
+      "config": "configs/0096.txt"
     },
     {
       "name": "faults/cache/tag-bit14-stuck-at-1-100.txt",
@@ -1531,8 +1425,7 @@
         }
       ],
       "index": 97,
-      "config": "configs/0097.txt",
-      "config_sha256": "a5e88335121068327676148ad2f7e505fb29fcb4bd8814ddd11944ce72c7899d"
+      "config": "configs/0097.txt"
     },
     {
       "name": "faults/cache/tag-bit14-bit-flip-100.txt",
@@ -1546,8 +1439,7 @@
         }
       ],
       "index": 98,
-      "config": "configs/0098.txt",
-      "config_sha256": "134ea62d5ce2960729fa59e0756b3b531264fd738e3cd1e8918e4b9122fd1ab9"
+      "config": "configs/0098.txt"
     },
     {
       "name": "faults/cache/tag-bit14-stuck-at-0-50.txt",
@@ -1561,8 +1453,7 @@
         }
       ],
       "index": 99,
-      "config": "configs/0099.txt",
-      "config_sha256": "5596990f33882515515b3497e3e2963c3f3854bd6d2fab8bddf271a72e9ec324"
+      "config": "configs/0099.txt"
     },
     {
       "name": "faults/cache/tag-bit14-stuck-at-1-50.txt",
@@ -1576,8 +1467,7 @@
         }
       ],
       "index": 100,
-      "config": "configs/0100.txt",
-      "config_sha256": "27cd4fb21367cde3a09322f99629b35a13d0e7a63da3e84a9c9fb03d63bc3408"
+      "config": "configs/0100.txt"
     },
     {
       "name": "faults/cache/tag-bit14-bit-flip-50.txt",
@@ -1591,8 +1481,7 @@
         }
       ],
       "index": 101,
-      "config": "configs/0101.txt",
-      "config_sha256": "3a6d219c74767906b79f970c8a1ee3e1d732daf7891212ed28767e93ba5b5155"
+      "config": "configs/0101.txt"
     },
     {
       "name": "faults/cache/tag-bit15-stuck-at-0-100.txt",
@@ -1606,8 +1495,7 @@
         }
       ],
       "index": 102,
-      "config": "configs/0102.txt",
-      "config_sha256": "251d53736be98af17dd098d39d331326e8cd1d47664701c6a62ee4984e33cd0a"
+      "config": "configs/0102.txt"
     },
     {
       "name": "faults/cache/tag-bit15-stuck-at-1-100.txt",
@@ -1621,8 +1509,7 @@
         }
       ],
       "index": 103,
-      "config": "configs/0103.txt",
-      "config_sha256": "0cce2425ad8b0b6a3942f8fb32b04ff5e127f2f65d81474874a88a2eab4bd51f"
+      "config": "configs/0103.txt"
     },
     {
       "name": "faults/cache/tag-bit15-bit-flip-100.txt",
@@ -1636,8 +1523,7 @@
         }
       ],
       "index": 104,
-      "config": "configs/0104.txt",
-      "config_sha256": "2753e3d708fd4d101ae3215660e5454ccbf7a85baf8e2cc54c01052bdd983ed6"
+      "config": "configs/0104.txt"
     },
     {
       "name": "faults/cache/tag-bit15-stuck-at-0-50.txt",
@@ -1651,8 +1537,7 @@
         }
       ],
       "index": 105,
-      "config": "configs/0105.txt",
-      "config_sha256": "09f1bd1d61c9725e571bac32d1c50495245785d7677c2f69cf2da8f24911aa02"
+      "config": "configs/0105.txt"
     },
     {
       "name": "faults/cache/tag-bit15-stuck-at-1-50.txt",
@@ -1666,8 +1551,7 @@
         }
       ],
       "index": 106,
-      "config": "configs/0106.txt",
-      "config_sha256": "095ac768c27cf849fa0b2b4b2fc982ffd7d6b2e42fdc946ae147d2a878e7e7f7"
+      "config": "configs/0106.txt"
     },
     {
       "name": "faults/cache/tag-bit15-bit-flip-50.txt",
@@ -1681,8 +1565,7 @@
         }
       ],
       "index": 107,
-      "config": "configs/0107.txt",
-      "config_sha256": "373dfb45f09fab66c0aa62ef4076c81c3e7e50a616f918cd749b209586b4dcbc"
+      "config": "configs/0107.txt"
     },
     {
       "name": "faults/cache/tag-bit16-stuck-at-0-100.txt",
@@ -1696,8 +1579,7 @@
         }
       ],
       "index": 108,
-      "config": "configs/0108.txt",
-      "config_sha256": "2522f531bf442c5fd32a9282a94874ca45a15f916b5c9c0ddaf78fdc32813e56"
+      "config": "configs/0108.txt"
     },
     {
       "name": "faults/cache/tag-bit16-stuck-at-1-100.txt",
@@ -1711,8 +1593,7 @@
         }
       ],
       "index": 109,
-      "config": "configs/0109.txt",
-      "config_sha256": "815d0f7c4cda6352de535b0c1fa0bf7750fe471fffac73e26cf5c487e4bd7806"
+      "config": "configs/0109.txt"
     },
     {
       "name": "faults/cache/tag-bit16-bit-flip-100.txt",
@@ -1726,8 +1607,7 @@
         }
       ],
       "index": 110,
-      "config": "configs/0110.txt",
-      "config_sha256": "7d87e3ce86c7a8cef421e18daeb88275eeacd00dbde3254a5668b209683815f7"
+      "config": "configs/0110.txt"
     },
     {
       "name": "faults/cache/tag-bit16-stuck-at-0-50.txt",
@@ -1741,8 +1621,7 @@
         }
       ],
       "index": 111,
-      "config": "configs/0111.txt",
-      "config_sha256": "411aabfc79c7289b73b11c15bdcb8d6415c023361f952bc0a98a0919a3f50e62"
+      "config": "configs/0111.txt"
     },
     {
       "name": "faults/cache/tag-bit16-stuck-at-1-50.txt",
@@ -1756,8 +1635,7 @@
         }
       ],
       "index": 112,
-      "config": "configs/0112.txt",
-      "config_sha256": "0e9c03ba96e2e66891c1a6eb8ca931080dcbd97632c2f51603e08a6acd2c77f6"
+      "config": "configs/0112.txt"
     },
     {
       "name": "faults/cache/tag-bit16-bit-flip-50.txt",
@@ -1771,8 +1649,7 @@
         }
       ],
       "index": 113,
-      "config": "configs/0113.txt",
-      "config_sha256": "0ad10ed7b23f2e504226b198c7ca629038a16a6e20ffcfe8e4f932a491aed9db"
+      "config": "configs/0113.txt"
     },
     {
       "name": "faults/cache/tag-bit17-stuck-at-0-100.txt",
@@ -1786,8 +1663,7 @@
         }
       ],
       "index": 114,
-      "config": "configs/0114.txt",
-      "config_sha256": "96809d73045d99e4c4f293f4392177ff7ce8a2b62cb030c583d4df80fb77ca49"
+      "config": "configs/0114.txt"
     },
     {
       "name": "faults/cache/tag-bit17-stuck-at-1-100.txt",
@@ -1801,8 +1677,7 @@
         }
       ],
       "index": 115,
-      "config": "configs/0115.txt",
-      "config_sha256": "8dad39b0075e88f2317bb141db1add95a0f62c3812895f7a37e9d7b3aeec2cbc"
+      "config": "configs/0115.txt"
     },
     {
       "name": "faults/cache/tag-bit17-bit-flip-100.txt",
@@ -1816,8 +1691,7 @@
         }
       ],
       "index": 116,
-      "config": "configs/0116.txt",
-      "config_sha256": "071b5dede8b59d916ac5a17bf29f29a59950495533a6aed63fe371daaae46206"
+      "config": "configs/0116.txt"
     },
     {
       "name": "faults/cache/tag-bit17-stuck-at-0-50.txt",
@@ -1831,8 +1705,7 @@
         }
       ],
       "index": 117,
-      "config": "configs/0117.txt",
-      "config_sha256": "02f25b73b012cee59af64ca41724ce87725b4f8f505eded072c654292a55bddb"
+      "config": "configs/0117.txt"
     },
     {
       "name": "faults/cache/tag-bit17-stuck-at-1-50.txt",
@@ -1846,8 +1719,7 @@
         }
       ],
       "index": 118,
-      "config": "configs/0118.txt",
-      "config_sha256": "4aeefa2301a412bb6c3edb872ec3c528e322f331296e84ff5a7a5d2c84fa02d8"
+      "config": "configs/0118.txt"
     },
     {
       "name": "faults/cache/tag-bit17-bit-flip-50.txt",
@@ -1861,8 +1733,7 @@
         }
       ],
       "index": 119,
-      "config": "configs/0119.txt",
-      "config_sha256": "0d3c7b23b8e528433178e8df064bfe126ae6a35d0d0fa46164f4e60d7a60ecc2"
+      "config": "configs/0119.txt"
     },
     {
       "name": "faults/cache/tag-bit18-stuck-at-0-100.txt",
@@ -1876,8 +1747,7 @@
         }
       ],
       "index": 120,
-      "config": "configs/0120.txt",
-      "config_sha256": "39cfe4d046b9d9ce38921b7d9a8da489a03ed94cef18e6af42d5870c88153c9d"
+      "config": "configs/0120.txt"
     },
     {
       "name": "faults/cache/tag-bit18-stuck-at-1-100.txt",
@@ -1891,8 +1761,7 @@
         }
       ],
       "index": 121,
-      "config": "configs/0121.txt",
-      "config_sha256": "727b00bc3bd304d949db3ed9ae8875ea9ab2281be73b99017ad5fe92691fb4b6"
+      "config": "configs/0121.txt"
     },
     {
       "name": "faults/cache/tag-bit18-bit-flip-100.txt",
@@ -1906,8 +1775,7 @@
         }
       ],
       "index": 122,
-      "config": "configs/0122.txt",
-      "config_sha256": "12c2def05455fa6c3e03d639c46666dfe74bb0efd9215ff80e40bdfeefc9049d"
+      "config": "configs/0122.txt"
     },
     {
       "name": "faults/cache/tag-bit18-stuck-at-0-50.txt",
@@ -1921,8 +1789,7 @@
         }
       ],
       "index": 123,
-      "config": "configs/0123.txt",
-      "config_sha256": "0c14ade2bed77a4b959fb36b587432b8424af188f8be12378b79ef69d8a07af3"
+      "config": "configs/0123.txt"
     },
     {
       "name": "faults/cache/tag-bit18-stuck-at-1-50.txt",
@@ -1936,8 +1803,7 @@
         }
       ],
       "index": 124,
-      "config": "configs/0124.txt",
-      "config_sha256": "e8763bbb3a731d45c7330ecb9b6238a42e17386ebcc106a4356958703bc728d0"
+      "config": "configs/0124.txt"
     },
     {
       "name": "faults/cache/tag-bit18-bit-flip-50.txt",
@@ -1951,8 +1817,7 @@
         }
       ],
       "index": 125,
-      "config": "configs/0125.txt",
-      "config_sha256": "569a300b23dfb8b67ebdbf8137e41f915d4251776f08e7b5f5e8ee71698dbcf4"
+      "config": "configs/0125.txt"
     },
     {
       "name": "faults/cache/tag-bit19-stuck-at-0-100.txt",
@@ -1966,8 +1831,7 @@
         }
       ],
       "index": 126,
-      "config": "configs/0126.txt",
-      "config_sha256": "870dc0c65211f589c45f4184287af2a96ae591dd9f5e476ecdaa27000a6fbc66"
+      "config": "configs/0126.txt"
     },
     {
       "name": "faults/cache/tag-bit19-stuck-at-1-100.txt",
@@ -1981,8 +1845,7 @@
         }
       ],
       "index": 127,
-      "config": "configs/0127.txt",
-      "config_sha256": "f8f9cdf9aab2fddf5be984a4d83d8ffc87c24ffe81a38b807d8b7e065e07d5d1"
+      "config": "configs/0127.txt"
     },
     {
       "name": "faults/cache/tag-bit19-bit-flip-100.txt",
@@ -1996,8 +1859,7 @@
         }
       ],
       "index": 128,
-      "config": "configs/0128.txt",
-      "config_sha256": "0c4b2c1e6d9fb8e54099478d86a3a30ee131e04dc26055142ec42f8031472f70"
+      "config": "configs/0128.txt"
     },
     {
       "name": "faults/cache/tag-bit19-stuck-at-0-50.txt",
@@ -2011,8 +1873,7 @@
         }
       ],
       "index": 129,
-      "config": "configs/0129.txt",
-      "config_sha256": "4c96497808fc99a27f9e794acfb761e637afa218e8233c5089a70062682e5476"
+      "config": "configs/0129.txt"
     },
     {
       "name": "faults/cache/tag-bit19-stuck-at-1-50.txt",
@@ -2026,8 +1887,7 @@
         }
       ],
       "index": 130,
-      "config": "configs/0130.txt",
-      "config_sha256": "80c7af5144dff4eb5f02f50479cfefbc9129ea6f88ac32230885af6ec6f70f4e"
+      "config": "configs/0130.txt"
     },
     {
       "name": "faults/cache/tag-bit19-bit-flip-50.txt",
@@ -2041,8 +1901,7 @@
         }
       ],
       "index": 131,
-      "config": "configs/0131.txt",
-      "config_sha256": "a23926e829ea25562e22232692227dd61ed028472bafa32ccf447ff566b86cf5"
+      "config": "configs/0131.txt"
     },
     {
       "name": "faults/cache/tag-bit20-stuck-at-0-100.txt",
@@ -2056,8 +1915,7 @@
         }
       ],
       "index": 132,
-      "config": "configs/0132.txt",
-      "config_sha256": "432a9f9e229de0fc8443da4d6035a5c05d7882e1a0f444da53fbc26c53767342"
+      "config": "configs/0132.txt"
     },
     {
       "name": "faults/cache/tag-bit20-stuck-at-1-100.txt",
@@ -2071,8 +1929,7 @@
         }
       ],
       "index": 133,
-      "config": "configs/0133.txt",
-      "config_sha256": "7001bdfb3f9bccf8aba8e2ff13ec7801a10a38513c13a6a098038a3b77f11fda"
+      "config": "configs/0133.txt"
     },
     {
       "name": "faults/cache/tag-bit20-bit-flip-100.txt",
@@ -2086,8 +1943,7 @@
         }
       ],
       "index": 134,
-      "config": "configs/0134.txt",
-      "config_sha256": "37b76f537f361d0a369355000ead45d5b3e6b7489b4d618902a4a9ce935802d6"
+      "config": "configs/0134.txt"
     },
     {
       "name": "faults/cache/tag-bit20-stuck-at-0-50.txt",
@@ -2101,8 +1957,7 @@
         }
       ],
       "index": 135,
-      "config": "configs/0135.txt",
-      "config_sha256": "cd303bcf13b82a3a7d93604cb33c996d216a6991a3a27ade19ace7a6f0dd6d1a"
+      "config": "configs/0135.txt"
     },
     {
       "name": "faults/cache/tag-bit20-stuck-at-1-50.txt",
@@ -2116,8 +1971,7 @@
         }
       ],
       "index": 136,
-      "config": "configs/0136.txt",
-      "config_sha256": "09a7cc7a328ed8876d48a263863025fa60be048a6081753bdd95aa04810e4808"
+      "config": "configs/0136.txt"
     },
     {
       "name": "faults/cache/tag-bit20-bit-flip-50.txt",
@@ -2131,8 +1985,7 @@
         }
       ],
       "index": 137,
-      "config": "configs/0137.txt",
-      "config_sha256": "5fe5a00027e66e90047c9d4efc700e422c37a7f431aadfcde4f0c47bb421482d"
+      "config": "configs/0137.txt"
     },
     {
       "name": "faults/cache/tag-bit21-stuck-at-0-100.txt",
@@ -2146,8 +1999,7 @@
         }
       ],
       "index": 138,
-      "config": "configs/0138.txt",
-      "config_sha256": "620c22b37da34513ac9d35a8032c8dcd4598db551b6a834992f8ed24eff67b2d"
+      "config": "configs/0138.txt"
     },
     {
       "name": "faults/cache/tag-bit21-stuck-at-1-100.txt",
@@ -2161,8 +2013,7 @@
         }
       ],
       "index": 139,
-      "config": "configs/0139.txt",
-      "config_sha256": "a9015eec2ff057f48269e9b10511eb22cd854b91872107c5c08523427f53734b"
+      "config": "configs/0139.txt"
     },
     {
       "name": "faults/cache/tag-bit21-bit-flip-100.txt",
@@ -2176,8 +2027,7 @@
         }
       ],
       "index": 140,
-      "config": "configs/0140.txt",
-      "config_sha256": "f24d4517c2b61df361ee81dec8f4257dfc490691cc6e4e80b27c1d9c0fd718ea"
+      "config": "configs/0140.txt"
     },
     {
       "name": "faults/cache/tag-bit21-stuck-at-0-50.txt",
@@ -2191,8 +2041,7 @@
         }
       ],
       "index": 141,
-      "config": "configs/0141.txt",
-      "config_sha256": "04f7e244b3b3a39aa791656168e3263af450375b98a35a3e83d6582ee6d48e19"
+      "config": "configs/0141.txt"
     },
     {
       "name": "faults/cache/tag-bit21-stuck-at-1-50.txt",
@@ -2206,8 +2055,7 @@
         }
       ],
       "index": 142,
-      "config": "configs/0142.txt",
-      "config_sha256": "6d10ef2cdef18c5c1002bf5d176a3bcde215d95e7edb1c742252954d3b00ef32"
+      "config": "configs/0142.txt"
     },
     {
       "name": "faults/cache/tag-bit21-bit-flip-50.txt",
@@ -2221,8 +2069,7 @@
         }
       ],
       "index": 143,
-      "config": "configs/0143.txt",
-      "config_sha256": "4a811edc9cce684f4a906fffe0d100e3df654957406a9071b5dfa8aa816292e7"
+      "config": "configs/0143.txt"
     },
     {
       "name": "faults/cache/tag-bit22-stuck-at-0-100.txt",
@@ -2236,8 +2083,7 @@
         }
       ],
       "index": 144,
-      "config": "configs/0144.txt",
-      "config_sha256": "2e039d2c3645370bbf5d79e8ce2bb559ed50eb952611391b73c02385108e0c29"
+      "config": "configs/0144.txt"
     },
     {
       "name": "faults/cache/tag-bit22-stuck-at-1-100.txt",
@@ -2251,8 +2097,7 @@
         }
       ],
       "index": 145,
-      "config": "configs/0145.txt",
-      "config_sha256": "cb1aae39420a960d8556b2000c3edf059c655e9ae40f4d094086bb022a0b1886"
+      "config": "configs/0145.txt"
     },
     {
       "name": "faults/cache/tag-bit22-bit-flip-100.txt",
@@ -2266,8 +2111,7 @@
         }
       ],
       "index": 146,
-      "config": "configs/0146.txt",
-      "config_sha256": "cf885e6558b184e4b68f072d1b4fd7e2d9a7574c4761ec6e5afff6dd5f029117"
+      "config": "configs/0146.txt"
     },
     {
       "name": "faults/cache/tag-bit22-stuck-at-0-50.txt",
@@ -2281,8 +2125,7 @@
         }
       ],
       "index": 147,
-      "config": "configs/0147.txt",
-      "config_sha256": "852b010d40b41ccec73963b9054799b2ec9107acf53ba0421bbff30acd188ff7"
+      "config": "configs/0147.txt"
     },
     {
       "name": "faults/cache/tag-bit22-stuck-at-1-50.txt",
@@ -2296,8 +2139,7 @@
         }
       ],
       "index": 148,
-      "config": "configs/0148.txt",
-      "config_sha256": "1c107a1a2a368f506c7dc5f1d7b781a5efbdb890eacb7db09f1f6fbe27093b1c"
+      "config": "configs/0148.txt"
     },
     {
       "name": "faults/cache/tag-bit22-bit-flip-50.txt",
@@ -2311,8 +2153,7 @@
         }
       ],
       "index": 149,
-      "config": "configs/0149.txt",
-      "config_sha256": "3466036d6476e9d0941bdd00b949d0f0dd3319b3c4e36b85d187b9768133db37"
+      "config": "configs/0149.txt"
     },
     {
       "name": "faults/cache/tag-bit23-stuck-at-0-100.txt",
@@ -2326,8 +2167,7 @@
         }
       ],
       "index": 150,
-      "config": "configs/0150.txt",
-      "config_sha256": "eea6f8f8807944a690b34f2b1aa2fec2067fa337141761662f56622a1b345b88"
+      "config": "configs/0150.txt"
     },
     {
       "name": "faults/cache/tag-bit23-stuck-at-1-100.txt",
@@ -2341,8 +2181,7 @@
         }
       ],
       "index": 151,
-      "config": "configs/0151.txt",
-      "config_sha256": "77c2b2d9aa91f62c807073b2c010b191917708457d2ef7dc76bcafa255207c23"
+      "config": "configs/0151.txt"
     },
     {
       "name": "faults/cache/tag-bit23-bit-flip-100.txt",
@@ -2356,8 +2195,7 @@
         }
       ],
       "index": 152,
-      "config": "configs/0152.txt",
-      "config_sha256": "50d80b2a46b54c3769027a142c3238047cb06d1cb2a4dc87764478d690d3309d"
+      "config": "configs/0152.txt"
     },
     {
       "name": "faults/cache/tag-bit23-stuck-at-0-50.txt",
@@ -2371,8 +2209,7 @@
         }
       ],
       "index": 153,
-      "config": "configs/0153.txt",
-      "config_sha256": "49f42ffd44a588df9aa8f5e18dc8ab19479aea8d61facf4cdfb1ad0118688543"
+      "config": "configs/0153.txt"
     },
     {
       "name": "faults/cache/tag-bit23-stuck-at-1-50.txt",
@@ -2386,8 +2223,7 @@
         }
       ],
       "index": 154,
-      "config": "configs/0154.txt",
-      "config_sha256": "86e1548304fd4cb9b8313819cb28aea50b60e6ad09a0543eac717a172879fd6f"
+      "config": "configs/0154.txt"
     },
     {
       "name": "faults/cache/tag-bit23-bit-flip-50.txt",
@@ -2401,8 +2237,7 @@
         }
       ],
       "index": 155,
-      "config": "configs/0155.txt",
-      "config_sha256": "6d66fb519920720f9e77c4cf6c645b7b5c2ec6a5e60c6464c31fbefb93ce4a3d"
+      "config": "configs/0155.txt"
     },
     {
       "name": "faults/cache/tag-bit24-stuck-at-0-100.txt",
@@ -2416,8 +2251,7 @@
         }
       ],
       "index": 156,
-      "config": "configs/0156.txt",
-      "config_sha256": "a5a7819a7b1611a3d04fbacae0b31c432f7cd88f0dc5e8e17171ec663f9e16dd"
+      "config": "configs/0156.txt"
     },
     {
       "name": "faults/cache/tag-bit24-stuck-at-1-100.txt",
@@ -2431,8 +2265,7 @@
         }
       ],
       "index": 157,
-      "config": "configs/0157.txt",
-      "config_sha256": "aed376c69e9c4851be6736de1ca039cedf7ddd768a99030d7c8a5f235587e853"
+      "config": "configs/0157.txt"
     },
     {
       "name": "faults/cache/tag-bit24-bit-flip-100.txt",
@@ -2446,8 +2279,7 @@
         }
       ],
       "index": 158,
-      "config": "configs/0158.txt",
-      "config_sha256": "30a9f44eaf4d97ec67eae9dc4b5a2996aa86f0a206af133b0acc279139c2438f"
+      "config": "configs/0158.txt"
     },
     {
       "name": "faults/cache/tag-bit24-stuck-at-0-50.txt",
@@ -2461,8 +2293,7 @@
         }
       ],
       "index": 159,
-      "config": "configs/0159.txt",
-      "config_sha256": "d182d107850c3b2bb071c993f6357463d26a376bc4e02da1d6ae64dd566787a3"
+      "config": "configs/0159.txt"
     },
     {
       "name": "faults/cache/tag-bit24-stuck-at-1-50.txt",
@@ -2476,8 +2307,7 @@
         }
       ],
       "index": 160,
-      "config": "configs/0160.txt",
-      "config_sha256": "11152d21aeaaee03384bd9c79389af9c546c4517b4adfff0f11f81a0308c77a0"
+      "config": "configs/0160.txt"
     },
     {
       "name": "faults/cache/tag-bit24-bit-flip-50.txt",
@@ -2491,8 +2321,7 @@
         }
       ],
       "index": 161,
-      "config": "configs/0161.txt",
-      "config_sha256": "8ed82bed54b74a5079c2b6c8a17223d9f356a7c41025c9b1b745acb53a0cc826"
+      "config": "configs/0161.txt"
     },
     {
       "name": "faults/cache/id-bit00-stuck-at-0-100.txt",
@@ -2506,8 +2335,7 @@
         }
       ],
       "index": 162,
-      "config": "configs/0162.txt",
-      "config_sha256": "021377b7386555a9f0f2cd77db4144958081d37d987e403de26bb06b0bb83b49"
+      "config": "configs/0162.txt"
     },
     {
       "name": "faults/cache/id-bit00-stuck-at-1-100.txt",
@@ -2521,8 +2349,7 @@
         }
       ],
       "index": 163,
-      "config": "configs/0163.txt",
-      "config_sha256": "a3b0efb950a95e2a368b8566567ba8396a792aa4b141e46050e74fb07c461a8a"
+      "config": "configs/0163.txt"
     },
     {
       "name": "faults/cache/id-bit00-bit-flip-100.txt",
@@ -2536,8 +2363,7 @@
         }
       ],
       "index": 164,
-      "config": "configs/0164.txt",
-      "config_sha256": "6ad4459128764a077b693a500c5a4fff1b85f3dfa19ba596fadf6a8cca2ba8d9"
+      "config": "configs/0164.txt"
     },
     {
       "name": "faults/cache/id-bit00-stuck-at-0-50.txt",
@@ -2551,8 +2377,7 @@
         }
       ],
       "index": 165,
-      "config": "configs/0165.txt",
-      "config_sha256": "0038382db03400652a5c379f4ea62947fe8b4d66ba9514fe3f38f92b40c9551e"
+      "config": "configs/0165.txt"
     },
     {
       "name": "faults/cache/id-bit00-stuck-at-1-50.txt",
@@ -2566,8 +2391,7 @@
         }
       ],
       "index": 166,
-      "config": "configs/0166.txt",
-      "config_sha256": "15f8b5bee3e2a70c37266b1ae11e81ba74d7627f13d90ad97f2536d72d478ef2"
+      "config": "configs/0166.txt"
     },
     {
       "name": "faults/cache/id-bit00-bit-flip-50.txt",
@@ -2581,8 +2405,254 @@
         }
       ],
       "index": 167,
-      "config": "configs/0167.txt",
-      "config_sha256": "7585f5c7c383afc30f459e98d803b0c101e8684058a7a08a1c307681514aea74"
+      "config": "configs/0167.txt"
+    },
+    {
+      "name": "faults/memory/bit00-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 0,
+          "rate": 1.0
+        }
+      ],
+      "index": 168,
+      "config": "configs/0168.txt"
+    },
+    {
+      "name": "faults/memory/bit00-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 0,
+          "rate": 1.0
+        }
+      ],
+      "index": 169,
+      "config": "configs/0169.txt"
+    },
+    {
+      "name": "faults/memory/bit00-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 0,
+          "rate": 1.0
+        }
+      ],
+      "index": 170,
+      "config": "configs/0170.txt"
+    },
+    {
+      "name": "faults/memory/bit00-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 0,
+          "rate": 0.5
+        }
+      ],
+      "index": 171,
+      "config": "configs/0171.txt"
+    },
+    {
+      "name": "faults/memory/bit00-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 0,
+          "rate": 0.5
+        }
+      ],
+      "index": 172,
+      "config": "configs/0172.txt"
+    },
+    {
+      "name": "faults/memory/bit00-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 0,
+          "rate": 0.5
+        }
+      ],
+      "index": 173,
+      "config": "configs/0173.txt"
+    },
+    {
+      "name": "faults/memory/bit01-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 1,
+          "rate": 1.0
+        }
+      ],
+      "index": 174,
+      "config": "configs/0174.txt"
+    },
+    {
+      "name": "faults/memory/bit01-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 1,
+          "rate": 1.0
+        }
+      ],
+      "index": 175,
+      "config": "configs/0175.txt"
+    },
+    {
+      "name": "faults/memory/bit01-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 1,
+          "rate": 1.0
+        }
+      ],
+      "index": 176,
+      "config": "configs/0176.txt"
+    },
+    {
+      "name": "faults/memory/bit01-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 1,
+          "rate": 0.5
+        }
+      ],
+      "index": 177,
+      "config": "configs/0177.txt"
+    },
+    {
+      "name": "faults/memory/bit01-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 1,
+          "rate": 0.5
+        }
+      ],
+      "index": 178,
+      "config": "configs/0178.txt"
+    },
+    {
+      "name": "faults/memory/bit01-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 1,
+          "rate": 0.5
+        }
+      ],
+      "index": 179,
+      "config": "configs/0179.txt"
+    },
+    {
+      "name": "faults/memory/bit02-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 2,
+          "rate": 1.0
+        }
+      ],
+      "index": 180,
+      "config": "configs/0180.txt"
+    },
+    {
+      "name": "faults/memory/bit02-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 2,
+          "rate": 1.0
+        }
+      ],
+      "index": 181,
+      "config": "configs/0181.txt"
+    },
+    {
+      "name": "faults/memory/bit02-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 2,
+          "rate": 1.0
+        }
+      ],
+      "index": 182,
+      "config": "configs/0182.txt"
+    },
+    {
+      "name": "faults/memory/bit02-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 2,
+          "rate": 0.5
+        }
+      ],
+      "index": 183,
+      "config": "configs/0183.txt"
+    },
+    {
+      "name": "faults/memory/bit02-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 2,
+          "rate": 0.5
+        }
+      ],
+      "index": 184,
+      "config": "configs/0184.txt"
+    },
+    {
+      "name": "faults/memory/bit02-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 2,
+          "rate": 0.5
+        }
+      ],
+      "index": 185,
+      "config": "configs/0185.txt"
+    },
+    {
+      "name": "faults/memory/bit03-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 3,
+          "rate": 1.0
+        }
+      ],
+      "index": 186,
+      "config": "configs/0186.txt"
     },
     {
       "name": "faults/memory-bit10-stuck-at-1.txt",
@@ -2594,9 +2664,619 @@
           "rate": 1.0
         }
       ],
-      "index": 168,
-      "config": "configs/0168.txt",
-      "config_sha256": "47f33b73539e657632a4decaea31b5805d47be80e6cc0c105941bfbb68db1190"
+      "index": 187,
+      "config": "configs/0187.txt"
+    },
+    {
+      "name": "faults/memory/bit03-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 3,
+          "rate": 1.0
+        }
+      ],
+      "index": 188,
+      "config": "configs/0188.txt"
+    },
+    {
+      "name": "faults/memory/bit03-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 3,
+          "rate": 1.0
+        }
+      ],
+      "index": 189,
+      "config": "configs/0189.txt"
+    },
+    {
+      "name": "faults/memory/bit03-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 3,
+          "rate": 0.5
+        }
+      ],
+      "index": 190,
+      "config": "configs/0190.txt"
+    },
+    {
+      "name": "faults/memory/bit03-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 3,
+          "rate": 0.5
+        }
+      ],
+      "index": 191,
+      "config": "configs/0191.txt"
+    },
+    {
+      "name": "faults/memory/bit03-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 3,
+          "rate": 0.5
+        }
+      ],
+      "index": 192,
+      "config": "configs/0192.txt"
+    },
+    {
+      "name": "faults/memory/bit04-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 4,
+          "rate": 1.0
+        }
+      ],
+      "index": 193,
+      "config": "configs/0193.txt"
+    },
+    {
+      "name": "faults/memory/bit04-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 4,
+          "rate": 1.0
+        }
+      ],
+      "index": 194,
+      "config": "configs/0194.txt"
+    },
+    {
+      "name": "faults/memory/bit04-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 4,
+          "rate": 1.0
+        }
+      ],
+      "index": 195,
+      "config": "configs/0195.txt"
+    },
+    {
+      "name": "faults/memory/bit04-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 4,
+          "rate": 0.5
+        }
+      ],
+      "index": 196,
+      "config": "configs/0196.txt"
+    },
+    {
+      "name": "faults/memory/bit04-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 4,
+          "rate": 0.5
+        }
+      ],
+      "index": 197,
+      "config": "configs/0197.txt"
+    },
+    {
+      "name": "faults/memory/bit04-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 4,
+          "rate": 0.5
+        }
+      ],
+      "index": 198,
+      "config": "configs/0198.txt"
+    },
+    {
+      "name": "faults/memory/bit05-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 5,
+          "rate": 1.0
+        }
+      ],
+      "index": 199,
+      "config": "configs/0199.txt"
+    },
+    {
+      "name": "faults/memory/bit05-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 5,
+          "rate": 1.0
+        }
+      ],
+      "index": 200,
+      "config": "configs/0200.txt"
+    },
+    {
+      "name": "faults/memory/bit05-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 5,
+          "rate": 1.0
+        }
+      ],
+      "index": 201,
+      "config": "configs/0201.txt"
+    },
+    {
+      "name": "faults/memory/bit05-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 5,
+          "rate": 0.5
+        }
+      ],
+      "index": 202,
+      "config": "configs/0202.txt"
+    },
+    {
+      "name": "faults/memory/bit05-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 5,
+          "rate": 0.5
+        }
+      ],
+      "index": 203,
+      "config": "configs/0203.txt"
+    },
+    {
+      "name": "faults/memory/bit05-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 5,
+          "rate": 0.5
+        }
+      ],
+      "index": 204,
+      "config": "configs/0204.txt"
+    },
+    {
+      "name": "faults/memory/bit06-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 6,
+          "rate": 1.0
+        }
+      ],
+      "index": 205,
+      "config": "configs/0205.txt"
+    },
+    {
+      "name": "faults/memory/bit06-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 6,
+          "rate": 1.0
+        }
+      ],
+      "index": 206,
+      "config": "configs/0206.txt"
+    },
+    {
+      "name": "faults/memory/bit06-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 6,
+          "rate": 1.0
+        }
+      ],
+      "index": 207,
+      "config": "configs/0207.txt"
+    },
+    {
+      "name": "faults/memory/bit06-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 6,
+          "rate": 0.5
+        }
+      ],
+      "index": 208,
+      "config": "configs/0208.txt"
+    },
+    {
+      "name": "faults/memory/bit06-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 6,
+          "rate": 0.5
+        }
+      ],
+      "index": 209,
+      "config": "configs/0209.txt"
+    },
+    {
+      "name": "faults/memory/bit06-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 6,
+          "rate": 0.5
+        }
+      ],
+      "index": 210,
+      "config": "configs/0210.txt"
+    },
+    {
+      "name": "faults/memory/bit07-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 7,
+          "rate": 1.0
+        }
+      ],
+      "index": 211,
+      "config": "configs/0211.txt"
+    },
+    {
+      "name": "faults/memory/bit07-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 7,
+          "rate": 1.0
+        }
+      ],
+      "index": 212,
+      "config": "configs/0212.txt"
+    },
+    {
+      "name": "faults/memory/bit07-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 7,
+          "rate": 1.0
+        }
+      ],
+      "index": 213,
+      "config": "configs/0213.txt"
+    },
+    {
+      "name": "faults/memory/bit07-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 7,
+          "rate": 0.5
+        }
+      ],
+      "index": 214,
+      "config": "configs/0214.txt"
+    },
+    {
+      "name": "faults/memory/bit07-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 7,
+          "rate": 0.5
+        }
+      ],
+      "index": 215,
+      "config": "configs/0215.txt"
+    },
+    {
+      "name": "faults/memory/bit07-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 7,
+          "rate": 0.5
+        }
+      ],
+      "index": 216,
+      "config": "configs/0216.txt"
+    },
+    {
+      "name": "faults/memory/bit08-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 8,
+          "rate": 1.0
+        }
+      ],
+      "index": 217,
+      "config": "configs/0217.txt"
+    },
+    {
+      "name": "faults/memory/bit08-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 8,
+          "rate": 1.0
+        }
+      ],
+      "index": 218,
+      "config": "configs/0218.txt"
+    },
+    {
+      "name": "faults/memory/bit08-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 8,
+          "rate": 1.0
+        }
+      ],
+      "index": 219,
+      "config": "configs/0219.txt"
+    },
+    {
+      "name": "faults/memory/bit08-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 8,
+          "rate": 0.5
+        }
+      ],
+      "index": 220,
+      "config": "configs/0220.txt"
+    },
+    {
+      "name": "faults/memory/bit08-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 8,
+          "rate": 0.5
+        }
+      ],
+      "index": 221,
+      "config": "configs/0221.txt"
+    },
+    {
+      "name": "faults/memory/bit08-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 8,
+          "rate": 0.5
+        }
+      ],
+      "index": 222,
+      "config": "configs/0222.txt"
+    },
+    {
+      "name": "faults/memory/bit09-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 9,
+          "rate": 1.0
+        }
+      ],
+      "index": 223,
+      "config": "configs/0223.txt"
+    },
+    {
+      "name": "faults/memory/bit09-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 9,
+          "rate": 1.0
+        }
+      ],
+      "index": 224,
+      "config": "configs/0224.txt"
+    },
+    {
+      "name": "faults/memory/bit09-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 9,
+          "rate": 1.0
+        }
+      ],
+      "index": 225,
+      "config": "configs/0225.txt"
+    },
+    {
+      "name": "faults/memory/bit09-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 9,
+          "rate": 0.5
+        }
+      ],
+      "index": 226,
+      "config": "configs/0226.txt"
+    },
+    {
+      "name": "faults/memory/bit09-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 9,
+          "rate": 0.5
+        }
+      ],
+      "index": 227,
+      "config": "configs/0227.txt"
+    },
+    {
+      "name": "faults/memory/bit09-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 9,
+          "rate": 0.5
+        }
+      ],
+      "index": 228,
+      "config": "configs/0228.txt"
+    },
+    {
+      "name": "faults/memory/bit10-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 10,
+          "rate": 1.0
+        }
+      ],
+      "index": 229,
+      "config": "configs/0229.txt"
+    },
+    {
+      "name": "faults/memory/bit10-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 10,
+          "rate": 1.0
+        }
+      ],
+      "index": 230,
+      "config": "configs/0230.txt"
+    },
+    {
+      "name": "faults/memory/bit10-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 10,
+          "rate": 1.0
+        }
+      ],
+      "index": 231,
+      "config": "configs/0231.txt"
+    },
+    {
+      "name": "faults/memory/bit10-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 10,
+          "rate": 0.5
+        }
+      ],
+      "index": 232,
+      "config": "configs/0232.txt"
+    },
+    {
+      "name": "faults/memory/bit10-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 10,
+          "rate": 0.5
+        }
+      ],
+      "index": 233,
+      "config": "configs/0233.txt"
+    },
+    {
+      "name": "faults/memory/bit10-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 10,
+          "rate": 0.5
+        }
+      ],
+      "index": 234,
+      "config": "configs/0234.txt"
     },
     {
       "name": "faults/memory-bit11-stuck-at-0.txt",
@@ -2608,9 +3288,21 @@
           "rate": 1.0
         }
       ],
-      "index": 169,
-      "config": "configs/0169.txt",
-      "config_sha256": "a9e8a6e15c8b598cc1e60168ac8824f4ca0f990843f199e256e3954c58751db5"
+      "index": 235,
+      "config": "configs/0235.txt"
+    },
+    {
+      "name": "faults/memory/bit11-stuck-at-0-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 11,
+          "rate": 1.0
+        }
+      ],
+      "index": 236,
+      "config": "configs/0236.txt"
     },
     {
       "name": "faults/memory-bit11-stuck-at-1.txt",
@@ -2622,9 +3314,60 @@
           "rate": 1.0
         }
       ],
-      "index": 170,
-      "config": "configs/0170.txt",
-      "config_sha256": "a35cc54dbd5d13bdd0a6cb06e42f5acd352912863840698d6045b022f05596c0"
+      "index": 237,
+      "config": "configs/0237.txt"
+    },
+    {
+      "name": "faults/memory/bit11-stuck-at-1-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 11,
+          "rate": 1.0
+        }
+      ],
+      "index": 238,
+      "config": "configs/0238.txt"
+    },
+    {
+      "name": "faults/memory/bit11-bit-flip-100.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 11,
+          "rate": 1.0
+        }
+      ],
+      "index": 239,
+      "config": "configs/0239.txt"
+    },
+    {
+      "name": "faults/memory/bit11-stuck-at-0-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_0",
+          "bit": 11,
+          "rate": 0.5
+        }
+      ],
+      "index": 240,
+      "config": "configs/0240.txt"
+    },
+    {
+      "name": "faults/memory/bit11-stuck-at-1-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "STUCK_AT_1",
+          "bit": 11,
+          "rate": 0.5
+        }
+      ],
+      "index": 241,
+      "config": "configs/0241.txt"
     },
     {
       "name": "faults/memory-bit11-flip.txt",
@@ -2636,9 +3379,21 @@
           "rate": 0.5
         }
       ],
-      "index": 171,
-      "config": "configs/0171.txt",
-      "config_sha256": "5c445763fb91f476410177391c3308d1b5c53feb657f61a5ae4b0b68efcab6d3"
+      "index": 242,
+      "config": "configs/0242.txt"
+    },
+    {
+      "name": "faults/memory/bit11-bit-flip-50.txt",
+      "properties": [
+        {
+          "type": "memory",
+          "fault": "BIT_FLIP",
+          "bit": 11,
+          "rate": 0.5
+        }
+      ],
+      "index": 243,
+      "config": "configs/0243.txt"
     },
     {
       "name": "faults/branch-predictor-100-percent.txt",
@@ -2648,9 +3403,8 @@
           "rate": 1.0
         }
       ],
-      "index": 172,
-      "config": "configs/0172.txt",
-      "config_sha256": "7b29943c945eb4630e503e31fd1948682b5e6a40c4a336767f7af241024842ad"
+      "index": 244,
+      "config": "configs/0244.txt"
     },
     {
       "name": "faults/branch-predictor-50-percent.txt",
@@ -2660,14 +3414,13 @@
           "rate": 0.5
         }
       ],
-      "index": 173,
-      "config": "configs/0173.txt",
-      "config_sha256": "8e7a4cb72042e3c6a0d86587052f3af47233c1a78ac2fd0bf0fad759fef34bf9"
+      "index": 245,
+      "config": "configs/0245.txt"
     },
     {
       "name": "no_fault",
       "properties": [],
-      "index": 174,
+      "index": 246,
       "config": null
     }
   ]

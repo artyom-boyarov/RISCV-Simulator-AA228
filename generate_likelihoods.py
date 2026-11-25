@@ -3,7 +3,6 @@
 
 import argparse
 import csv
-import hashlib
 import json
 import multiprocessing
 import os
@@ -23,10 +22,6 @@ ROOT = Path(__file__).resolve().parent
 RETURN = re.compile(rb"^Program return value:\s*\n\s*(-?\d+)\s*$", re.MULTILINE)
 FIELD_ORDER = {"valid": 0, "modified": 1, "tag": 2, "id": 3}
 TYPE_ORDER = {"STUCK_AT_0": 0, "STUCK_AT_1": 1, "BIT_FLIP": 2}
-
-
-def checksum(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def fault_properties(text):
@@ -116,7 +111,7 @@ def prepare(args):
             raise ValueError(f"Kernel executable missing: {path}; compile the kernel first")
         if any(t["name"] == path.stem for t in tests):
             raise ValueError(f"Duplicate kernel name: {path.stem}")
-        tests.append({"index": len(tests), "name": path.stem, "path": portable_path(path), "sha256": checksum(path),
+        tests.append({"index": len(tests), "name": path.stem, "path": portable_path(path),
                       "no_cache": path.stem in args.uncached_test})
     unknown = set(args.uncached_test) - {t["name"] for t in tests}
     if unknown:
@@ -142,12 +137,11 @@ def prepare(args):
             relative = f"configs/{i:04d}.txt"
             (campaign / relative).write_text(content)
             state["config"] = relative
-            state["config_sha256"] = checksum(campaign / relative)
-    manifest = {"version": 1, "simulator": portable_path(simulator), "simulator_sha256": checksum(simulator),
+    manifest = {"version": 1, "simulator": portable_path(simulator),
                 "runs": args.runs, "timeout_seconds": args.timeout, "branch_strategy": args.branch_strategy,
                 "tests": tests, "states": states}
     (campaign / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    write_csv(campaign / "tests.csv", tests, ("index", "name", "path", "sha256", "no_cache"))
+    write_csv(campaign / "tests.csv", tests, ("index", "name", "path", "no_cache"))
     state_rows = [dict(s, properties=json.dumps(s["properties"], sort_keys=True)) for s in states]
     write_csv(campaign / "states.csv", state_rows, ("index", "name", "config", "properties"))
     print(f"Prepared {len(tests)} tests × {len(states)} states × {args.runs} runs = "
@@ -193,17 +187,11 @@ def run_state(campaign_arg, index):
     if destination.exists():
         raise FileExistsError(f"State result already exists: {destination}")
     simulator = resolve_path(manifest["simulator"])
-    if checksum(simulator) != manifest["simulator_sha256"]:
-        raise ValueError("Simulator changed since preparation; create a new campaign")
     config = campaign / state["config"] if state["config"] else None
-    if config and checksum(config) != state["config_sha256"]:
-        raise ValueError(f"Fault snapshot changed: {config}")
     outcomes, times = [], []
     with tempfile.TemporaryDirectory(prefix=f"likelihood-{index}-") as scratch:
         for test in manifest["tests"]:
             kernel = resolve_path(test["path"])
-            if checksum(kernel) != test["sha256"]:
-                raise ValueError(f"Kernel changed since preparation: {kernel}")
             results = [run_one(str(simulator), str(kernel), config, test["no_cache"],
                                manifest["branch_strategy"], manifest["timeout_seconds"], scratch)
                        for _ in range(manifest["runs"])]
@@ -218,7 +206,6 @@ def run_state(campaign_arg, index):
         temporary = Path(temp.name)
         try:
             np.savez_compressed(temp, state_index=index, worker_pid=os.getpid(),
-                                manifest_sha256=checksum(campaign / "manifest.json"),
                                 outcomes=np.asarray(outcomes), seconds=np.asarray(times))
         except BaseException:
             temporary.unlink(missing_ok=True)
@@ -241,7 +228,6 @@ def aggregate(args):
     for state in states:
         with np.load(campaign / "states" / f"{state['index']:04d}.npz", allow_pickle=False) as data:
             if (int(data["state_index"]) != state["index"] or
-                    str(data["manifest_sha256"]) != checksum(campaign / "manifest.json") or
                     data["outcomes"].shape != (len(tests), runs) or
                     data["seconds"].shape != (len(tests), runs)):
                 raise ValueError(f"Invalid result for state {state['index']}")

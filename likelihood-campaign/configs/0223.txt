@@ -1,0 +1,4 @@
+type = memory
+fault = STUCK_AT_0
+bit = 9
+rate = 1.0

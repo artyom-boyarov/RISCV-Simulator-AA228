@@ -5,13 +5,14 @@ Pass a file to the simulator with `-f`, for example:
 ```sh
 ./compile-riscv.sh kernels/fault-detection/memory_stride_kernel.c
 ./build/Simulator kernels/bin/memory_stride_kernel.riscv -q --no-cache \
-  -f faults/memory-bit11-stuck-at-0.txt
+  -f faults/memory/bit11-stuck-at-0-100.txt
 ```
 
 The branch predictor files invert 50% or 100% of branch predictions.
-The three memory files model a stuck-zero, stuck-one, or 50% bit-flip fault in
-page-offset bit 11. Copy and edit a file to select `rate = 0.5` or `rate = 1.0`
-and other offset bits. Memory faults are suppressed during instruction fetches
+`memory/` covers all combinations of page-offset bits 0–11, the three fault
+types, and 50% or 100% rates. Run
+`python3 faults/generate_memory_faults.py` to create missing files.
+Memory faults are suppressed during instruction fetches
 but can affect data and stack accesses, so a fault can still prevent a program
 from reaching its return statement.
 

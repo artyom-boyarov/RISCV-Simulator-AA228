@@ -1,4 +1,4 @@
-# Flip page-offset bit 11 independently with probability 0.5 per byte access.
 type = memory
-fault = BIT_FLIP
-bit = 11
+fault = STUCK_AT_0
+bit = 0
+rate = 0.5

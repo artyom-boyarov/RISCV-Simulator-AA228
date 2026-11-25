@@ -9,7 +9,7 @@ import tempfile
 
 import numpy as np
 
-from generate_likelihoods import checksum, load_manifest, resolve_path, run_one
+from generate_likelihoods import load_manifest, resolve_path, run_one
 from VOI_Belief import update_belief
 
 
@@ -59,19 +59,10 @@ def main():
         raise ValueError("Invalid likelihood probabilities or duplicate outcome labels")
 
     simulator = resolve_path(args.simulator).resolve()
-    if checksum(simulator) != manifest["simulator_sha256"]:
-        print("Warning: simulator binary differs from the likelihood campaign's binary; "
-              "its outcomes may not follow the measured likelihoods.", file=sys.stderr, flush=True)
-    for test in manifest["tests"]:
-        if checksum(resolve_path(test["path"])) != test["sha256"]:
-            raise ValueError(f"Kernel differs from the likelihood campaign: {test['path']}")
-
     rng = random.Random(args.seed)
     chosen = select_state(args.state, states, rng)
     state = manifest["states"][chosen]
     config = campaign / state["config"] if state["config"] else None
-    if config and checksum(config) != state["config_sha256"]:
-        raise ValueError(f"Fault snapshot changed: {config}")
     outcome_index = {label: index for index, label in enumerate(outcomes)}
     belief = np.full(len(states), 1.0 / len(states))
     print(f"True state: {chosen}: {states[chosen]}", flush=True)

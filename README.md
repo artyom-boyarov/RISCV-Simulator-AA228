@@ -76,7 +76,7 @@ an independent reference. It is a workload result, not a pass/fail return code.
 ```sh
 ./compile-riscv.sh kernels/stress/sobel_image.c
 ./build/Simulator kernels/bin/sobel_image.riscv -q
-./build/Simulator kernels/bin/sobel_image.riscv -q -f faults/memory-bit11-stuck-at-0.txt
+./build/Simulator kernels/bin/sobel_image.riscv -q -f faults/memory/bit11-stuck-at-0-100.txt
 ```
 
 The buffers are placed starting at address `0x000`. Cache and memory faults may
@@ -97,10 +97,19 @@ python3 generate_likelihoods.py batch likelihood-campaign --processes 16
 ```
 
 The preparation step writes `manifest.json`, `tests.csv`, and `states.csv`, and
-copies the fault configurations into `configs/`. The state index is stable:
-for example, the valid-bit stuck-0, stuck-1, and flip faults at 100% are states
-0–2, followed by their 50% versions at 3–5. The no-fault state is last.
-Properties in the CSV come from file contents rather than filenames.
+copies the fault configurations into `configs/`. Properties in the CSV come
+from file contents rather than filenames. State indices can change when fault
+files are added or removed; the campaign's mapping is saved in `states.csv`.
+
+To run only selected fault files in a new campaign, repeat `--fault`:
+
+```sh
+python3 generate_likelihoods.py batch subset-campaign --processes 4 \
+  --fault faults/memory/bit11-stuck-at-0-100.txt \
+  --fault faults/branch-predictor-50-percent.txt
+```
+
+The no-fault baseline is included automatically.
 
 `batch` prepares the campaign, runs it with Python multiprocessing, then
 aggregates the results. Each worker handles one state and exits
@@ -139,6 +148,19 @@ and `sacctmgr show qos format=Name,MaxTRESPU,MaxWall` on the cluster before
 requesting more CPUs. See FarmShare's [Slurm documentation](https://docs.farmshare.stanford.edu/docs/slurm/)
 for partition and quality-of-service details.
 
+To run only the memory fault configurations in a separate campaign:
+
+```sh
+sbatch run_memory_likelihoods.sbatch
+tail -f memory-likelihood-JOBID.out
+```
+
+This selects every file in `faults/memory/`, plus the automatic no-fault
+baseline. Results go to `memory-likelihood-campaign/likelihoods.npz`, with
+the state mapping in `memory-likelihood-campaign/states.csv`. Pass a different
+campaign directory and batch options as with the main script. Resubmit the same
+directory to resume; its existing manifest determines the states and settings.
+
 The `prepare`, `run`, `run-state`, and `aggregate` subcommands remain available
 if you need to execute or inspect the stages separately.
 
@@ -166,8 +188,7 @@ not the host exit status, is used for successful guest exits.
 `--kernel PATH` and `--fault PATH`, and repeatable `--uncached-test TEST_NAME`
 configure a campaign. Cache is enabled by default for every test. Use the same
 cache mode for all states of a test; an uncached test cannot observe cache
-faults. Inputs are identified by SHA-256 and copied fault files are checked
-before each job. Prepare and run on the cluster after building the simulator
+faults. Prepare and run on the cluster after building the simulator
 there, or transfer the same binaries with the campaign and repository. The
 branch predictor affects prediction statistics and timing, so architectural
 return values alone may not distinguish branch faults.
@@ -220,6 +241,17 @@ whether that state is the selected fault. Omit `--state` to choose a random
 fault configuration (excluding `no_fault`), or pass an exact state name from
 `states.csv`, including `no_fault`. `--seed` controls state
 and test selection; it does not seed the simulator's fault randomness.
+
+To find states with identical observed likelihoods across every test and
+outcome, run:
+
+```sh
+python3 analyze_indistinguishable_faults.py likelihood-campaign/likelihoods.npz --output indistinguishable-faults.md
+```
+
+The [report for the existing campaign](indistinguishable-faults.md) lists the
+matching states and their shared outcomes. Matching estimates from a finite
+sample do not prove that the underlying fault distributions are identical.
 `--threshold` changes the threshold, and `--max-steps` is an optional limit.
 Without a limit, the experiment can run indefinitely if states cannot be
 distinguished by the available tests.
@@ -228,8 +260,7 @@ The likelihoods are unsmoothed estimates from a finite number of runs. An
 unseen outcome or one with zero probability under all currently possible
 states cannot be used for a Bayes update, so the script stops and reports it.
 An observed outcome with zero likelihood for the actual state eliminates that
-state; the script warns when this happens. It also warns if the local simulator
-binary differs from the binary used to collect the campaign.
+state; the script warns when this happens.
 
 ### Fault configuration files
 

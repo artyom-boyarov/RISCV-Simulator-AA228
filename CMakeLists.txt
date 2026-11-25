@@ -55,6 +55,9 @@ if(BUILD_TESTING)
         add_test(NAME cache_fault_configs_test COMMAND ${PYTHON_EXECUTABLE}
                  ${CMAKE_SOURCE_DIR}/test/cache_fault_configs_test.py
                  ${CMAKE_SOURCE_DIR}/faults/cache)
+        add_test(NAME memory_fault_configs_test COMMAND ${PYTHON_EXECUTABLE}
+                 ${CMAKE_SOURCE_DIR}/test/memory_fault_configs_test.py
+                 ${CMAKE_SOURCE_DIR} $<TARGET_FILE:Simulator>)
         add_test(NAME fault_cli_test COMMAND ${PYTHON_EXECUTABLE}
                  ${CMAKE_SOURCE_DIR}/test/fault_cli_test.py $<TARGET_FILE:Simulator>
                  ${CMAKE_SOURCE_DIR}/kernels/bin/test/test_branch.riscv)
