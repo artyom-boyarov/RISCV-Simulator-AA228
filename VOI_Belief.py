@@ -72,3 +72,80 @@ def lookahead_value(b, L, cost, G, depth):
 def next_test_lookahead(b, L, cost, G, depth=3):
     """Non-myopic version of next_test. Returns a test index, or None to declare now."""
     return lookahead_value(b, L, cost, G, depth)[1]
+
+
+# ======================================================================
+# Running the diagnosis on the real likelihood campaign
+#   python VOI_Belief.py [campaign_dir] [--episodes N] [--depth D]
+# ======================================================================
+import argparse
+import time
+
+
+def load(campaign):
+    d = np.load(f"{campaign}/likelihoods.npz", allow_pickle=False)
+    L = d["L"]                                   # (tests, states, outcomes)
+    cost = d["mean_seconds"].mean(axis=1)        # avg runtime of each test (seconds)
+    return L, cost, d["test_names"].tolist(), d["state_names"].tolist()
+
+
+def indistinguishable_groups(L):
+    """States whose likelihoods are identical for every test can never be told apart,
+    so diagnose the GROUP. Returns G[s, g] (one column per group)."""
+    keys = [L[:, s, :].tobytes() for s in range(L.shape[1])]
+    ids = {k: i for i, k in enumerate(dict.fromkeys(keys))}
+    G = np.zeros((L.shape[1], len(ids)))
+    for s, k in enumerate(keys):
+        G[s, ids[k]] = 1
+    return G
+
+
+def diagnose(true_s, L, cost, G, pick_test, rng, max_tests=20, conf=0.9):
+    """Run tests until belief in one group >= conf. Returns (correct, n_tests, total_cost)."""
+    b = np.ones(L.shape[1]) / L.shape[1]
+    n, total = 0, 0.0
+    while n < max_tests and (b @ G).max() < conf:
+        t = pick_test(b)
+        if t is None:
+            break
+        o = rng.choice(L.shape[2], p=L[t, true_s])   # simulate running the test
+        b = update_belief(b, L, t, o)
+        n, total = n + 1, total + cost[t]
+    return G[true_s, int((b @ G).argmax())] == 1, n, total
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("campaign", nargs="?", default="likelihood-campaign")
+    ap.add_argument("--episodes", type=int, default=100)
+    ap.add_argument("--depth", type=int, default=2)
+    ap.add_argument("--seed", type=int, default=0)
+    args = ap.parse_args()
+
+    L, cost, tests, states = load(args.campaign)
+    G = indistinguishable_groups(L)
+    rng = np.random.default_rng(args.seed)
+    T, S = L.shape[0], L.shape[1]
+    print(f"{T} tests, {S} states, {G.shape[1]} distinguishable groups")
+    print("test costs (s):", dict(zip(tests, cost.round(2))))
+
+    def myopic(b):
+        t, net = next_test(b, L, cost, G)
+        return t if net > 0 else None            # net <= 0 -> declare
+
+    policies = {
+        "random": lambda b: int(rng.integers(T)),
+        "myopic VOI": myopic,
+        f"forward search d={args.depth}": lambda b: next_test_lookahead(b, L, cost, G, args.depth),
+    }
+    truth = rng.integers(S, size=args.episodes)  # same true faults for every policy
+    for name, pick in policies.items():
+        t0 = time.time()
+        r = [diagnose(s, L, cost, G, pick, rng) for s in truth]
+        print(f"{name:22s} accuracy={np.mean([x[0] for x in r]):.3f}  "
+              f"avg tests={np.mean([x[1] for x in r]):.2f}  "
+              f"avg cost={np.mean([x[2] for x in r]):.2f}s  ({time.time() - t0:.0f}s to run)")
+
+
+if __name__ == "__main__":
+    main()
